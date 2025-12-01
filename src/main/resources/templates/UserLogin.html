@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+
+    <!-- Link to your CSS -->
+    <link rel="stylesheet" th:href="@{/Styles/UserRegister.css}">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <h2>Login</h2>
+
+        <form th:action="@{/user/login}" method="post">
+
+            <!-- Username or Email -->
+            <div class="field">
+                <label>Username or Email</label>
+                <input type="text" name="username" placeholder="Enter username or email">
+            </div>
+
+            <!-- Password -->
+            <div class="field">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="********">
+            </div>
+
+            <!-- Display login error message -->
+            <p class="error" th:if="${param.error}">
+                Invalid username or password
+            </p>
+
+            <button type="submit" class="btn">Login</button>
+
+            <p class="login-link">
+                Don't have an account? <a th:href="@{/user/register}">Register</a>
+            </p>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
