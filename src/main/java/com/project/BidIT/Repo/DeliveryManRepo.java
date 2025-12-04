@@ -5,12 +5,12 @@ import com.project.BidIT.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DeliveryManRepo extends JpaRepository<DeliveryMan,Long> {
+    Optional<DeliveryMan> findByDEmail(String email);
 
-    DeliveryMan findByDEmailAndPassword(String dEmail, String password);
-    DeliveryMan findByDEmail(String dEmail);
-    List<DeliveryMan> findByStatus(Status status);
-    List<DeliveryMan> findByCategory_CategoryId(Long categoryId);
-    List<DeliveryMan> findByDNameContainingIgnoreCase(String dName);
+    List<DeliveryMan> findByStatus(String status);
+
+
 }

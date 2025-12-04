@@ -1,10 +1,9 @@
-package com.project.BidIT.Service;
+package com.project.BidIT.Service.Admin;
 
 import com.project.BidIT.entity.Admin;
 import com.project.BidIT.entity.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AdminService {
 
@@ -13,6 +12,6 @@ public interface AdminService {
     Admin findAdminByEmail(String email);
 
     List<Admin> getAllAdmin();
-
+    Admin loginAdmin(String email, String rawPassword);
     void deleteAdmin(Long adminId);
 }

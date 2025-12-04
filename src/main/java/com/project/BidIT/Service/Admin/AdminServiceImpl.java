@@ -1,7 +1,8 @@
-package com.project.BidIT.Service;
+package com.project.BidIT.Service.Admin;
 
 import com.project.BidIT.Repo.AdminRepo;
 import com.project.BidIT.entity.Admin;
+import com.project.BidIT.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,19 @@ public class AdminServiceImpl implements AdminService {
         return adminRepository.findAdminByEmail(email)
                 .orElse(null);
     }
+
+    @Override
+    public Admin loginAdmin(String email, String rawPassword) {
+        Admin admin = findAdminByEmail(email);
+        if (admin == null) return null;
+
+        if (!passwordEncoder.matches(rawPassword, admin.getPassword())) {
+            return null;
+        }
+
+        return admin;
+    }
+
 
     @Override
     public List<Admin> getAllAdmin() {

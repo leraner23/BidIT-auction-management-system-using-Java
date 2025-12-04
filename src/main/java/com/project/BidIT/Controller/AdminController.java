@@ -1,10 +1,12 @@
 package com.project.BidIT.Controller;
 
-import com.project.BidIT.DTO.UserDto;
-import com.project.BidIT.Service.AdminService;
-import com.project.BidIT.Service.UserService;
+import com.project.BidIT.Compontents.JwtUtil;
+import com.project.BidIT.DTO.AdminDto;
+import com.project.BidIT.Service.Admin.AdminService;
 import com.project.BidIT.entity.Admin;
 import com.project.BidIT.entity.User;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.UUID;
 
 @Controller
@@ -26,25 +29,27 @@ public class AdminController {
     @Value("${file.upload.admins}")
     private String uploadDir;
 
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     private AdminService adminService;
     // Show registration form
     @GetMapping("/register")
     public String userRegister(Model model){
-        model.addAttribute("admins", new UserDto());
-        return "AdminRegisterForm";
+        model.addAttribute("admins", new AdminDto());
+        return "Admin/AdminRegisterForm";
     }
 
     //Handles the registration form
     @PostMapping("/register")
-    public String userRegister(@Valid @ModelAttribute("admins") UserDto dto, BindingResult bindingResult,
+    public String userRegister(@Valid @ModelAttribute("admins") AdminDto dto, BindingResult bindingResult,
                                Model model){
         System.out.println("Form submitted: " + dto.getEmail());
 
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(err -> System.out.println("Validation error: " + err));
-            return "AdminRegisterForm";
+            return "Admin/AdminRegisterForm";
         }
 
         Admin admin = new Admin();
@@ -53,7 +58,7 @@ public class AdminController {
         admin.setEmail(dto.getEmail());
         admin.setPhone(dto.getPhone());
         admin.setGender(dto.getGender());
-        admin.setAddress(dto.getPAddress());
+        admin.setAddress(dto.getAddress());
 
         admin.setPassword(dto.getPassword());
 
@@ -77,14 +82,14 @@ public class AdminController {
         } catch (Exception ex) {
             ex.printStackTrace();
             model.addAttribute("errorMessage", ex.getMessage());
-            return "AdminRegisterForm";
+            return "Admin/AdminRegisterForm";
         }
 
 
     }
 
     @GetMapping("/login")
-    public String userlogin( @RequestParam(value = "error", required = false) String error,
+    public String loginAdmin( @RequestParam(value = "error", required = false) String error,
                              @RequestParam(value = "logout", required = false) String logout,Model model){
         model.addAttribute("admin", new Admin());
         if (error != null) {
@@ -94,8 +99,67 @@ public class AdminController {
             model.addAttribute("successMessage", "You have been logged out successfully.");
         }
 
-        return "AdminLogin";
+        return "Admin/AdminLogin";
 
+    }
+
+    @PostMapping("/login")
+    public String loginAdmin(@RequestParam("email") String email,
+                            @RequestParam("password") String password,
+                            HttpServletResponse response,
+                            Model model) {
+        try {
+            System.out.println("Received Email: " + email);
+            System.out.println("Received Password: " + password);
+            Admin loggedAdmin = adminService.loginAdmin(email, password);
+
+
+            System.out.println("Logged Admin: " + loggedAdmin);
+            if (loggedAdmin == null) {
+                model.addAttribute("errorMessage", "Invalid email or password!");
+                return "Admin/AdminLogin";
+            }
+
+            String token = jwtUtil.generateTokenAdmin(loggedAdmin);
+
+            Cookie cookie = new Cookie("jwt_token", token);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(24 * 60 * 60);
+            response.addCookie(cookie);
+
+            System.out.println("JWT cookie set: " + cookie.getValue());
+
+            return "redirect:/admin/dashboard";
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "Admin/Adminlogin";
+        }
+    }
+    @GetMapping("/dashboard")
+    public String AdminDashboard(Model model, Principal principal){
+        System.out.println("Principal: " + principal);
+        if (principal == null) {
+            return "redirect:/admin/login"; // extra safety
+        }
+
+        String email = principal.getName(); // get email from Jwt
+        Admin loggedAdmin = adminService.findAdminByEmail(email); // fetch the logged user email
+        model.addAttribute("admins",loggedAdmin);
+        return "Admin/AdminDashboard";
+    }
+
+
+
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("jwt_token", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return "redirect:/admin/login";
     }
 
 

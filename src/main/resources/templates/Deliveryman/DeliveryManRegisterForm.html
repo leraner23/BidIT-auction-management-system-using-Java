@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delivery Man Registration</title>
+    <link rel="stylesheet" th:href="@{/Styles/UserRegister.css}">
+</head>
+
+<body>
+<div class="container">
+    <div class="card">
+    <h2>Delivery Man Registration</h2>
+    <form th:action="@{/delivery/register}" th:object="${deliveryMan}" method="post" enctype="multipart/form-data">
+
+        <!-- Name -->
+        <div class="field">
+            <label>Name</label>
+            <input type="text" th:field="*{dName}" placeholder="Enter name" required>
+            <p th:if="${#fields.hasErrors('dName')}" th:errors="*{dName}"></p>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+            <label>Email</label>
+            <input type="email" th:field="*{dEmail}" placeholder="Enter your email" required>
+            <p th:if="${#fields.hasErrors('dEmail')}" th:errors="*{dEmail}"></p>
+        </div>
+
+        <!-- Phone -->
+        <div class="field">
+            <label>Phone</label>
+            <input type="text" th:field="*{dPhone}" placeholder="98XXXXXXXX" required>
+            <p th:if="${#fields.hasErrors('dPhone')}" th:errors="*{dPhone}"></p>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+            <label>Password</label>
+            <input type="password" th:field="*{password}" placeholder="********" required>
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+        </div>
+
+        <!-- Gender -->
+        <div class="field">
+            <label>Gender</label>
+            <select th:field="*{gender}" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <p th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
+        </div>
+
+        <!-- Address -->
+        <div class="field">
+            <label>Permanent Address</label>
+            <textarea th:field="*{PAddress}" placeholder="Enter address" rows="1" required></textarea>
+            <p th:if="${#fields.hasErrors('PAddress')}" th:errors="*{PAddress}"></p>
+        </div>
+
+        <!-- Age -->
+        <div class="field">
+            <label>Age</label>
+            <input type="text" th:field="*{dAge}" placeholder="Enter age" required>
+            <p th:if="${#fields.hasErrors('dAge')}" th:errors="*{dAge}"></p>
+        </div>
+
+        <!-- Profile Image -->
+        <div class="field">
+            <label>Profile Image</label>
+            <input type="file" th:field="*{deliveryImage}" required>
+            <p th:if="${#fields.hasErrors('deliveryImage')}" th:errors="*{deliveryImage}"></p>
+        </div>
+
+        <button type="submit" class="btn">Register</button>
+        <p class="login-link">
+            Already have an account? <a th:href="@{/delivery/login}">Login</a>
+        </p>
+    </form>
+</div>
+</div>
+</body>
+</html>

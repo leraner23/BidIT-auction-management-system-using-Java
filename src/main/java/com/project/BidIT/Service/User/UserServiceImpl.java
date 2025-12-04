@@ -1,9 +1,8 @@
-package com.project.BidIT.Service;
+package com.project.BidIT.Service.User;
 
 
 
 import com.project.BidIT.Repo.UserRepository;
-import com.project.BidIT.entity.Admin;
 import com.project.BidIT.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +12,7 @@ import java.util.List;
 
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
 
     private final UserRepository userRepository;
@@ -36,6 +35,19 @@ public class UserServiceImpl implements UserService{
 
         return userRepository.save(user);
     }
+
+    @Override
+    public User loginUser(String email, String rawPassword) {
+        User user = findByEmail(email);
+        if (user == null) return null;
+
+        if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
+            return null;
+        }
+
+        return user;
+    }
+
 
     @Override
     public User findByEmail(String email) {

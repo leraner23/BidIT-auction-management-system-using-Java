@@ -1,4 +1,4 @@
-package com.project.BidIT.Service;
+package com.project.BidIT.Service.User;
 import com.project.BidIT.Repo.UserRepository;
 import com.project.BidIT.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;

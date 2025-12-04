@@ -1,8 +1,11 @@
 package com.project.BidIT.Controller;
 
+import com.project.BidIT.Compontents.JwtUtil;
 import com.project.BidIT.DTO.UserDto;
-import com.project.BidIT.Service.UserService;
+import com.project.BidIT.Service.User.UserService;
 import com.project.BidIT.entity.User;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.UUID;
 
 @Controller
@@ -24,6 +28,8 @@ public class UserController {
     @Value("${file.upload.users}")
     private String uploadDir;
 
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     private UserService userService;
@@ -31,7 +37,7 @@ public class UserController {
     @GetMapping("/register")
     public String userRegister(Model model){
         model.addAttribute("users", new UserDto());
-        return "UserRegisterForm";
+        return "User/UserRegisterForm";
     }
 
     //Handles the registration form
@@ -46,7 +52,7 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(err -> System.out.println("Validation error: " + err));
-            return "UserRegisterForm";
+            return "User/UserRegisterForm";
         }
 
         User user = new User();
@@ -79,7 +85,7 @@ public class UserController {
         } catch (Exception ex) {
             ex.printStackTrace();
             model.addAttribute("errorMessage", ex.getMessage());
-            return "UserRegisterForm";
+            return "User/UserRegisterForm";
         }
 
 
@@ -96,9 +102,63 @@ public class UserController {
             model.addAttribute("successMessage", "You have been logged out successfully.");
         }
 
-        return "UserLogin";
+        return "User/UserLogin";
 
     }
 
+    @PostMapping("/login")
+    public String loginUser(@RequestParam("email") String email,
+                            @RequestParam("password") String password,
+                            HttpServletResponse response,
+                            Model model) {
+        try {
+            User loggedUser = userService.loginUser(email, password);
+
+            if (loggedUser == null) {
+                model.addAttribute("errorMessage", "Invalid email or password!");
+                return "User/UserLogin";
+            }
+
+            String token = jwtUtil.generateToken(loggedUser);
+
+            Cookie cookie = new Cookie("jwt_token", token);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(24 * 60 * 60);
+            response.addCookie(cookie);
+
+            System.out.println("JWT cookie set: " + cookie.getValue());
+
+            return "redirect:/user/dashboard";
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "User/UserLogin";
+        }
+    }
+    @GetMapping("/dashboard")
+    public String UserDashboard(Model model, Principal principal){
+        System.out.println("Principal: " + principal);
+        if (principal == null) {
+            return "redirect:/user/login"; // extra safety
+        }
+
+        String email = principal.getName(); // get email from Jwt
+        User loggedUser = userService.findByEmail(email); // fetch the logged user email
+        model.addAttribute("users",loggedUser);
+        return "User/UserDashboard";
+    }
+
+
+
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("jwt_token", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return "redirect:/user/login";
+    }
 
 }

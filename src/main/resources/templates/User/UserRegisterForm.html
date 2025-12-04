@@ -67,7 +67,7 @@
             <!-- Address -->
             <div class="field">
                 <label>Permanent Address</label>
-                <textarea th:field="*{PAddress}" rows="3" placeholder="Enter your address" required></textarea>
+                <textarea th:field="*{PAddress}" rows="1" placeholder="Enter your address" required></textarea>
                 <p class="error" th:if="${#fields.hasErrors('PAddress')}" th:errors="*{PAddress}"></p>
             </div>
 
