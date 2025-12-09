@@ -2,6 +2,7 @@ package com.project.BidIT.Controller;
 
 import com.project.BidIT.Compontents.JwtUtil;
 import com.project.BidIT.DTO.UserDto;
+import com.project.BidIT.Repo.CategoryRepo;
 import com.project.BidIT.Service.User.UserService;
 import com.project.BidIT.entity.User;
 import jakarta.servlet.http.Cookie;
@@ -28,6 +29,8 @@ public class UserController {
     @Value("${file.upload.users}")
     private String uploadDir;
 
+    @Autowired
+    private CategoryRepo categoryRepo;
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -145,8 +148,9 @@ public class UserController {
         }
 
         String email = principal.getName(); // get email from Jwt
-        User loggedUser = userService.findByEmail(email); // fetch the logged user email
+        User loggedUser = userService.findByEmail(email);// fetch the logged user email
         model.addAttribute("users",loggedUser);
+        model.addAttribute("amount","budget");
         return "User/UserDashboard";
     }
 

@@ -16,7 +16,6 @@ public interface BidDetailsRepo extends JpaRepository<BidDetails, Long> {
     List<BidDetails> findByBid(Bid bid);
     List<BidDetails> findByBuyer(User buyer);
     List<BidDetails> findByDeliveryMan(DeliveryMan deliveryMan);
-    // Find by status (e.g., COMPLETED, PENDING)
-    List<BidDetails> findByStatus(Status status);
+
     boolean existsByBid(Bid bid);
 }

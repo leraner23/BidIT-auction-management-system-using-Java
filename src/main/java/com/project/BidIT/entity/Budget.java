@@ -2,7 +2,9 @@ package com.project.BidIT.entity;
 
 import jakarta.persistence.*;
 
+
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Budget {
@@ -23,6 +25,16 @@ public class Budget {
     @Column(name = "Time", nullable = false)
     private LocalDate time;
 
+    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
+    private List<BudgetTranscation> transactions;
+
+    public List<BudgetTranscation> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<BudgetTranscation> transactions) {
+        this.transactions = transactions;
+    }
 
     public long getBudgetId() {
         return budgetId;

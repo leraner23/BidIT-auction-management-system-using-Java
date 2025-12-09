@@ -1,0 +1,237 @@
+/* ============================= */
+/* Global Reset & Fonts */
+/* ============================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    color: #333;
+}
+
+/* ============================= */
+/* Dashboard Container */
+/* ============================= */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ============================= */
+/* Sidebar Styles */
+/* ============================= */
+.sidebar {
+    width: 250px;
+    background-color: #1f2937;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s;
+    position: relative;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.user-profile-summary {
+    text-align: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.user-profile-summary .profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 2px solid #fff;
+}
+
+.user-profile-summary h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    word-wrap: break-word;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav ul {
+    list-style: none;
+    padding: 10px 0;
+}
+
+.sidebar-nav ul li {
+    margin: 10px 0;
+}
+
+.sidebar-nav ul li a,
+.sidebar-nav ul li button {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #fff;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    border-radius: 8px;
+}
+
+.sidebar-nav ul li a.active,
+.sidebar-nav ul li button:hover,
+.sidebar-nav ul li a:hover {
+    background-color: #4f46e5;
+    color: #fff;
+}
+
+/* Logout Button */
+.logout-btn {
+    background-color: #e11d48;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #be123c;
+}
+
+/* ============================= */
+/* Main Content Styles */
+/* ============================= */
+.main-content {
+    flex: 1;
+    padding: 20px 30px;
+    background-color: #f4f6f8;
+    overflow-y: auto;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 60%;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-btn {
+    cursor: pointer;
+    padding: 6px 10px;
+    background-color: #4f46e5;
+    color: #fff;
+    border-radius: 6px;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+/* Navbar Actions */
+.navbar-actions a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+}
+
+.navbar-actions a:hover {
+    color: #4f46e5;
+}
+
+/* Section Headings */
+h2, h3 {
+    color: #111827;
+    margin-bottom: 15px;
+}
+
+/* ============================= */
+/* Responsive Design */
+/* ============================= */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 70px;
+    }
+
+    .sidebar.collapsed {
+        width: 0;
+        overflow: hidden;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .sidebar-nav ul {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sidebar-nav ul li {
+        margin: 0 5px;
+    }
+
+    .main-content {
+        padding: 15px 10px;
+    }
+}
+
+/* ============================= */
+/* Optional: Smooth Sidebar Toggle */
+/* ============================= */
+.sidebar-toggle-btn {
+    position: absolute;
+    top: 15px;
+    right: -20px;
+    background-color: #4f46e5;
+    color: #fff;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 18px;
+    border: none;
+}

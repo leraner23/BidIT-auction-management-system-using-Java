@@ -2,6 +2,8 @@ package com.project.BidIT.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Category {
     @Id
@@ -14,8 +16,16 @@ public class Category {
     @Column(name = "Qunatity")
     private double quantity;
 
-    @Column(name = "base_price", nullable = false)
-    private float bPrice;
+    @OneToMany(mappedBy = "category")
+    private List<Item> items;
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 
     public long getCategoryId() {
         return categoryId;
@@ -41,11 +51,5 @@ public class Category {
         this.quantity = quantity;
     }
 
-    public float getbPrice() {
-        return bPrice;
-    }
 
-    public void setbPrice(float bPrice) {
-        this.bPrice = bPrice;
-    }
 }

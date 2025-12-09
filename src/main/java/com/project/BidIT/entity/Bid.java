@@ -11,55 +11,32 @@ public class Bid {
     private Long bidId;
 
     @ManyToOne
-    @JoinColumn(name = "arena_id", referencedColumnName = "arenaId")
-    private Arena arena;
+    @JoinColumn(name = "item_id", referencedColumnName = "itemId")
+    private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    @JoinColumn(name = "Bidder_id", referencedColumnName = "userId")
     private User user; // bidder
 
-    @ManyToOne
-    @JoinColumn(name = "Category" , referencedColumnName = "categoryId")
-    private Category category;
-
-    @Column(name = "Base-Amount", nullable = false)
-    private double amount;
-
-    @Column(name = "Image",nullable = false)
-    private String itemImage;
 
     private LocalDateTime bidTime;
 
-    public Long getBidId() {
-        return bidId;
+    private double bidAmount;
+
+    public double getBidAmount() {
+        return bidAmount;
     }
 
-    public void setBidId(Long bidId) {
-        this.bidId = bidId;
+    public void setBidAmount(double bidAmount) {
+        this.bidAmount = bidAmount;
     }
 
-    public Arena getArena() {
-        return arena;
+    public Item getItem() {
+        return item;
     }
 
-    public void setArena(Arena arena) {
-        this.arena = arena;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public LocalDateTime getBidTime() {
@@ -70,19 +47,23 @@ public class Bid {
         this.bidTime = bidTime;
     }
 
-    public Category getCategory() {
-        return category;
+    public Long getBidId() {
+        return bidId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setBidId(Long bidId) {
+        this.bidId = bidId;
     }
 
-    public String getItemImage() {
-        return itemImage;
+
+
+    public User getUser() {
+        return user;
     }
 
-    public void setItemImage(String itemImage) {
-        this.itemImage = itemImage;
+    public void setUser(User user) {
+        this.user = user;
     }
+
+
 }

@@ -5,6 +5,7 @@ import com.project.BidIT.enums.Status;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class BidDetails {
@@ -19,7 +20,7 @@ public class BidDetails {
 
 
     @ManyToOne
-    @JoinColumn(name="buyer_id", referencedColumnName = "userId")
+    @JoinColumn(name="HighestBidder_id", referencedColumnName = "userId")
     private User buyer;
 
     @Column(name = "Amount Paied")
@@ -28,15 +29,6 @@ public class BidDetails {
     private String review;
     private String results;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private Status status;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "rate")
-    private Rate rate;
-
-    private  String description;
 
     @ManyToOne
     @JoinColumn(name = "Delivery_id", referencedColumnName = "deliveryId")
@@ -98,27 +90,9 @@ public class BidDetails {
         this.results = results;
     }
 
-    public Status getStatus() {
-        return status;
-    }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
-    public Rate getRate() {
-        return rate;
-    }
 
-    public void setRate(Rate rate) {
-        this.rate = rate;
-    }
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
