@@ -12,6 +12,8 @@ public class WebConfig implements WebMvcConfigurer {
     private String uploadUserDir;
     @Value("${file.upload.admins}")
     private String uploadAdminDir;
+    @Value("${file.upload.item.images}")
+    private String uploadItemDir;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
@@ -22,6 +24,9 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/admins/**")
                 .addResourceLocations("file:"+ uploadAdminDir+ "/");
+
+        registry.addResourceHandler("/items/**")
+                .addResourceLocations("file:"+ uploadItemDir+ "/");
     }
 
 }

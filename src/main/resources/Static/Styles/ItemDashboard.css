@@ -1,0 +1,123 @@
+/* -----------------------------------
+   GLOBAL LAYOUT FIX (important)
+----------------------------------- */
+:root {
+    --primary-color: #007bff;
+    --sidebar-width: 250px;
+    --navbar-height: 70px;
+    --background-color: #f8f9fa;
+    --text-color: #343a40;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+
+    /* Align with fragments */
+    padding-left: var(--sidebar-width);
+    padding-top: var(--navbar-height);
+}
+
+/* Remove default header (you are using navbar fragment) */
+header h1 {
+    display: none;
+}
+
+/* -----------------------------------
+   MAIN CONTENT AREA
+----------------------------------- */
+.main-content {
+    padding: 20px 30px;
+}
+
+/* -----------------------------------
+   ACTION BUTTONS
+----------------------------------- */
+.actions {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.actions button {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.actions button a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.actions button:hover {
+    opacity: 0.85;
+}
+
+/* -----------------------------------
+   CATEGORY LIST
+----------------------------------- */
+.category-list {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.category-list h2 {
+    margin-top: 0;
+}
+
+.category-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.category-list li {
+    background-color: #e9ecef;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+/* -----------------------------------
+   ITEMS TABLE
+----------------------------------- */
+.items-table {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.items-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.items-table th, .items-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 12px 10px;
+    text-align: left;
+}
+
+.items-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+.items-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.items-table img {
+    border-radius: 5px;
+    object-fit: cover;
+}

@@ -13,8 +13,6 @@ public class Category {
     @Column(name ="Category_name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "Qunatity")
-    private double quantity;
 
     @OneToMany(mappedBy = "category")
     private List<Item> items;
@@ -43,13 +41,6 @@ public class Category {
         this.name = name;
     }
 
-    public double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
-    }
 
 
 }

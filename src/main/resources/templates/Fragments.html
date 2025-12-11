@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR FRAGMENT ================= -->
+<div th:fragment="sidebar(users)">
+    <aside class="sidebar">
+        <div class="user-profile-summary">
+            <img th:src="@{/users/{img}(img=${users.userImage})}" alt="User Image" class="profile-image">
+            <h3 th:text="${users.fullName}"></h3>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a th:href="@{/user/dashboard}" class="active">🏠 Dashboard</a></li>
+                <li><a th:href="@{/item/dashboard}">📦 Orders</a></li>
+                <li><a th:href="@{/bids/dashboard}">💰 Bids</a></li>
+                <li><a th:href="@{/budget/dashboard}">💳 Budget</a></li>
+                <li><a th:href="@{/arena/dashboard}">⚔️ Arena</a></li>
+
+                <li>
+                    <form th:action="@{/user/logout}" method="post" class="logout-form">
+                        <button type="submit" class="logout-btn">➡️ Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+</div>
+
+<!-- ================= NAVBAR FRAGMENT ================= -->
+<div th:fragment="navbar">
+    <header class="navbar">
+        <div class="search-bar">
+            <input type="search" placeholder="Search for bids, items, or categories..." class="search-input">
+            <span class="search-btn">🔍 Search</span>
+        </div>
+
+        <nav class="navbar-actions">
+            <a href="#" class="nav-profile-link">👤 Profile</a>
+            <a href="#" class="nav-icon">🔔</a>
+            <a href="#" class="nav-icon">📧</a>
+        </nav>
+    </header>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+/* ===== BudgetDashboardCss.css ===== */
+
+/* Base styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f6fa;
+    color: #333;
+    margin: 0;
+    padding-top: 80px;   /* space for navbar */
+    padding-left: 260px; /* space for sidebar */
+    transition: padding-left 0.3s ease;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    margin: auto;
+    padding-bottom: 50px;
+}
+
+/* Headings */
+h2, h3 {
+    color: #2f3640;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Card style */
+.card {
+    background-color: #ffffff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0px 6px 20px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.12);
+}
+
+/* Info rows */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #2f3640;
+}
+
+/* Add Button (General Dashboard Button) */
+.add-btn {
+    background-color: #4b7bec;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 15px;
+}
+
+.add-btn:hover {
+    background-color: #3867d6;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(56,103,214,0.3);
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #dee2e6;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background-color: #4b7bec;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* --- Modal Overlay (Dashboard Style) --- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+/* --- Modal Content (Dashboard Style) --- */
+.modal-content {
+    background-color: #ffffff;
+    padding: 30px; /* Adjusted padding */
+    border-radius: 12px;
+    text-align: center;
+    width: 380px; /* Adjusted width for screenshot look */
+    max-width: 90%;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animate modal */
+.modal.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* --- Modal Specific Styles (from screenshot) --- */
+
+/* Modal Heading - "Add Budget Amount" */
+.modal-content h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #2f3640;
+}
+
+/* Form Container */
+.form-box {
+    text-align: left; /* Ensure labels/inputs start on the left */
+    margin-bottom: 25px;
+}
+
+/* Form Labels - "Amount:", "PayPal Email:" */
+.form-box label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Form Inputs - The input fields */
+.form-box input {
+    width: 100%;
+    padding: 10px 14px;
+    margin-top: 0; /* Removing original margin-top */
+    margin-bottom: 20px; /* Space between inputs */
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+    background-color: #fcfcfc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-box input:focus {
+    outline: none;
+    border-color: #4b7bec;
+    box-shadow: 0 0 8px rgba(75,123,236,0.2), inset 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* --- Payment Buttons (Simulating the PayPal Look) --- */
+
+/* General Button Styling for the payment options */
+.payment-btn {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.payment-btn:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+/* 1. Yellow PayPal Button */
+.paypal-btn {
+    background-color: #ffc439;
+    color: #142c8e;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* 2. Debit or Credit Card Button */
+.card-btn {
+    background-color: #2f3640;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin-bottom: 15px; /* Space before the Powered by text */
+}
+
+/* You might need an external library like Font Awesome for the icon */
+.card-btn i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Powered by PayPal text */
+.powered-by-paypal {
+    font-size: 12px;
+    color: #888;
+    margin-top: 15px;
+    margin-bottom: 25px; /* Space above Cancel button */
+}
+
+/* 3. Red Cancel Button */
+.cancel-btn {
+    background-color: #e63946;
+    color: #fff;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+}
+
+.cancel-btn:hover {
+    background-color: #d62828;
+    transform: translateY(-1px);
+}
+
+/* --- Deprecated/Unused (Original .close-btn) --- */
+/* The screenshot uses a different style, so this is replaced by .cancel-btn */
+.close-btn {
+    display: none;
+}
+
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    body {
+        padding-left: 0;
+        padding-top: 70px;
+    }
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+}

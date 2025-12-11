@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Category</title>
+    <link rel="stylesheet" th:href="@{/Styles/formCategory.css}">
+    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+</head>
+<body>
+<div th:replace="Fragments  :: sidebar(${users})"></div>
+<div th:replace="Fragments  :: navbar"></div>
+<div class="form-container">
+    <h2>Add New Category</h2>
+
+    <form th:action="@{/item/category/save}" th:object="${category}" method="post">
+
+        <!-- Category Name -->
+        <label for="name">Category Name:</label>
+        <input type="text" id="name" th:field="*{name}" placeholder="Enter category name" required>
+
+
+        <button type="submit">Add Category</button>
+    </form>
+</div>
+
+</body>
+</html>

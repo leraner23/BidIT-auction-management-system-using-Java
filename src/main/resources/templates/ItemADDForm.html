@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Item</title>
+    <link rel="stylesheet" th:href="@{/Styles/form.css}">
+    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+</head>
+<body>
+
+<div th:replace="Fragments :: sidebar(${users})"></div>
+<div th:replace="Fragments :: navbar"></div>
+
+<h2>Add New Item</h2>
+
+<form th:action="@{/item/save}" th:object="${itemDto}" method="post" enctype="multipart/form-data">
+
+    <!-- User -->
+    <label>User:</label>
+    <input type="text" th:value="${users.username}" readonly />
+    <input type="hidden" th:field="*{user}" th:value="${users}" />
+
+
+    <label>Category:</label>
+    <select th:field="*{categoryId}">
+        <option th:each="c : ${categories}" th:value="${c.categoryId}" th:text="${c.name}"></option>
+    </select>
+
+    <!-- Rate -->
+    <label>Rate:</label>
+    <select th:field="*{rate}">
+        <option th:each="r : ${rates}" th:value="${r}" th:text="${r}"></option>
+    </select>
+
+    <!-- Amount -->
+    <label>Base Amount:</label>
+    <input type="number" step="0.01" th:field="*{amount}" required>
+
+    <!-- Status -->
+    <label>Status:</label>
+    <select th:field="*{status}">
+        <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
+    </select>
+
+    <!-- Description -->
+    <label>Description:</label>
+    <textarea th:field="*{description}" rows="4"></textarea>
+
+    <!-- Image Upload -->
+    <label>Item Image:</label>
+    <input type="file" th:field="*{itemImage}" accept="image/*" required>
+
+    <button type="submit">Add Item</button>
+
+</form>
+
+</body>
+</html>

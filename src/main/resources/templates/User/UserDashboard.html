@@ -5,99 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - BidIT</title>
     <link rel="stylesheet" th:href="@{/Styles/userdashboard-style.css}">
+    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+
 </head>
 <body>
-
+<div th:replace="Fragments  :: sidebar(${users})"></div>
+<div th:replace="Fragments  :: navbar"></div>
 <div class="dashboard-container">
 
-    <aside class="sidebar">
-        <div class="user-profile-summary">
-            <img th:src="@{/users/{img}(img=${users.userImage})}" alt="User Image" class="profile-image">
-            <h3 th:text="${users.fullName}"></h3>
-        </div>
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="#" class="active">🏠 Dashboard</a></li>
-                <li><a href="#" class="active">📦 Orders</a></li>
-                <li><a href="#" class="active">💰 Bids</a></li>
-                <li><a th:href="@{/budget/dashboard}">💳 Budget</a></li>
-                <li><a href="#" class="active">⚔️ Arena </a></li>
-                <li> <form th:action="@{/user/logout}" method="post" class="logout-form">
-                    <button type="submit" class="logout-btn">➡️ Logout</button>
-                </form> </li>
-            </ul>
-        </nav>
-
-    </aside>
+    <!-- 🔹 Sidebar Fragment -->
+    <div th:replace="Fragments  :: sidebar(${users})"></div>
 
     <main class="main-content">
 
-        <header class="navbar">
-            <div class="search-bar">
-                <input type="search" placeholder="Search for bids, items, or categories..." class="search-input">
-                <span class="search-btn">🔍 Search</span>
-            </div>
-            <nav class="navbar-actions">
-                <a href="#" class="nav-profile-link">👤 Profile</a>
-                <a href="#" class="nav-icon">🔔</a>
-                <a href="#" class="nav-icon">📧</a>
-            </nav>
-        </header>
+        <!-- 🔹 Navbar Fragment -->
+        <div th:replace="Fragments  :: navbar"></div>
+
         <h2>Dashboard Overview</h2>
 
-<!--        <section class="info-cards-section">-->
-<!--            <div class="card budget-card">-->
-<!--                <h3>Current Budget</h3>-->
-<!--                <p class="budget-amount" th:text="${#numbers.formatCurrency(budget)}">$500.00</p>-->
-<!--                <a href="#">Manage Funds</a>-->
-<!--            </div>-->
+        <!-- Your dashboard content goes here -->
 
-<!--            <div class="card active-bids-card">-->
-<!--                <h3>Active Bids</h3>-->
-<!--                <p class="bid-count" th:text="${bidsInfo.activeCount}">7</p>-->
-<!--                <a href="#">View Active Bids</a>-->
-<!--            </div>-->
-
-<!--            <div class="card outbid-card">-->
-<!--                <h3>Outbid</h3>-->
-<!--                <p class="outbid-count" th:text="${bidsInfo.outbidCount}">2</p>-->
-<!--                <a href="#">Check Status</a>-->
-<!--            </div>-->
-
-<!--            <div class="card won-bids-card">-->
-<!--                <h3>Bids Won</h3>-->
-<!--                <p class="won-count" th:text="${bidsInfo.wonCount}">1</p>-->
-<!--                <a href="#">Finalize Purchase</a>-->
-<!--            </div>-->
-<!--        </section>-->
-
-<!--        <section class="budget-bar-section">-->
-<!--            <h3>Budget Utilization</h3>-->
-<!--            <p>Spent: $<span th:text="${bidsInfo.totalSpent}">250.00</span> / Total Budget: $<span th:text="${budget}">500.00</span></p>-->
-<!--            <div class="budget-bar-container">-->
-<!--                <div class="budget-bar-fill"-->
-<!--                     th:style="'width: ' + ${bidsInfo.percentageSpent} + '%;'"-->
-<!--                     th:attr="data-percentage=${bidsInfo.percentageSpent}">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </section>-->
-
-<!--        <section class="category-list-section">-->
-<!--            <h3>Explore Categories</h3>-->
-<!--            <div class="category-grid">-->
-<!--                <div class="category-item" th:each="category : ${categories}">-->
-<!--                    <div class="category-display">-->
-<!--                        <span class="category-icon" th:text="${category.icon}">🏷️</span>-->
-<!--                        <span th:text="${category.name}">Electronics</span>-->
-<!--                        <span class="item-count" th:text="'(' + ${category.itemCount} + ')'">(150)</span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div th:if="${#lists.isEmpty(categories)}">-->
-<!--                    <p>No categories available.</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </section>-->
     </main>
+
+
+
 </div>
 </body>
 

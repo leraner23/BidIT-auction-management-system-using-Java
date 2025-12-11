@@ -22,6 +22,10 @@ public class Item {
     @JoinColumn(name ="Bids" , referencedColumnName = "bidId")
     private Bid bid;
 
+    @OneToOne
+    @JoinColumn(name = "bidDetails_id")
+    private BidDetails bidDetails;
+
     @Column(name = "Image",nullable = false)
     private String itemImage;
 
@@ -108,5 +112,13 @@ public class Item {
 
     public void setBid(Bid bid) {
         this.bid = bid;
+    }
+
+    public BidDetails getBidDetails() {
+        return bidDetails;
+    }
+
+    public void setBidDetails(BidDetails bidDetails) {
+        this.bidDetails = bidDetails;
     }
 }

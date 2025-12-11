@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Dashboard</title>
+    <link rel="stylesheet" th:href="@{/Styles/ItemDashboard.css}">
+    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+</head>
+<body>
+<header>
+    <h1>Orders Dashboard</h1>
+</header>
+
+<div th:replace="Fragments  :: sidebar(${users})"></div>
+<div th:replace="Fragments  :: navbar"></div>
+<main class="main-content">
+<section class="actions">
+    <button><a  th:href="@{/item/category}">Create Category</a></button>
+    <button><a  th:href="@{/item/add}">Add Item</a></button>
+</section>
+
+<section class="category-list">
+    <h2>Categories</h2>
+    <ul>
+        <li th:each="cat : ${categories}" th:text="${cat.name}"></li>
+    </ul>
+</section>
+
+    <section class="items-table">
+        <h2>Items</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Category</th>
+                <th>Image</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Item Placed By</th>
+                <th>Item Owned By</th>
+                <th>Sold Amount</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.itemId}"></td>
+                <td th:text="${item.category.name}"></td>
+                <td><img th:src="@{/items/{img}(img=${item.itemImage})}" width="60"></td>
+                <td th:text="${item.rate}"></td>
+                <td th:text="${item.amount}"></td>
+                <td th:text="${item.status}"></td>
+                <td th:text="${item.description}"></td>
+                <td th:text="${item.user.username}"></td>
+
+
+                <td th:text="${item.bidDetails != null ? item.bidDetails.buyer.username : '-'}"></td>
+
+
+                <td th:text="${item.bidDetails != null ? item.bidDetails.amount : '-'}"></td>
+
+                <td>
+                <span th:if="${item.bidDetails == null}">
+                    <a th:href="@{/item/edit/{id}(id=${item.itemId})}">Edit</a>
+                    <a th:href="@{/item/delete/{id}(id=${item.itemId})}"
+                       onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                </span>
+                    <span th:if="${item.bidDetails != null}">-</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
