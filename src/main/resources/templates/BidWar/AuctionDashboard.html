@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Auction Dashboard | BidIT</title>
+    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+    <link rel="stylesheet" th:href="@{/Styles/auctionDashboardCSS.css}">
+</head>
+<body>
+
+<div th:replace="Fragments  :: sidebar(${users})"></div>
+<div th:replace="Fragments  :: navbar"></div>
+
+<div class="auction-container">
+
+    <h2 class="auction-title">🔥 Active Auctions</h2>
+
+    <div class="auction-grid">
+
+        <div class="auction-card"
+             th:each="item : ${items}">
+
+            <div class="image-wrapper">
+                <img th:src="@{/items/{img}(img=${item.itemImage})}"
+                     alt="Item Image">
+                <span class="rate-badge" th:text="${item.rate}"></span>
+            </div>
+
+            <div class="card-body">
+                <h3 class="item-category"
+                    th:text="${item.category.name}"></h3>
+
+                <p class="item-desc"
+                   th:text="${item.description}"></p>
+
+                <div class="price-row">
+                    <span class="base-label">Base Amount</span>
+                    <span class="base-price">
+                        Rs. <span th:text="${item.amount}"></span>
+                    </span>
+                </div>
+
+                <a th:href="@{/auction/bidwar/{id}(id=${item.itemId})}"
+                   class="bidwar-btn">
+                    ⚔️ BidWar
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

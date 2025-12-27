@@ -4,6 +4,8 @@ import com.project.BidIT.enums.Rate;
 import com.project.BidIT.enums.Status;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Item {
     @Id
@@ -14,13 +16,17 @@ public class Item {
     @JoinColumn(name = "Place_id", referencedColumnName = "userId")
     private User user;
 
+    private String ItemName;
+
     @ManyToOne
     @JoinColumn(name = "Category", referencedColumnName = "categoryId")
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name ="Bids" , referencedColumnName = "bidId")
-    private Bid bid;
+    @Column(nullable = true)
+    private LocalDateTime auctionStartTime; // when admin starts auction
+
+    @Column(nullable = true)
+    private int auctionDurationMinutes;
 
     @OneToOne
     @JoinColumn(name = "bidDetails_id")
@@ -106,13 +112,6 @@ public class Item {
         this.category = category;
     }
 
-    public Bid getBid() {
-        return bid;
-    }
-
-    public void setBid(Bid bid) {
-        this.bid = bid;
-    }
 
     public BidDetails getBidDetails() {
         return bidDetails;
@@ -120,5 +119,29 @@ public class Item {
 
     public void setBidDetails(BidDetails bidDetails) {
         this.bidDetails = bidDetails;
+    }
+
+    public String getItemName() {
+        return ItemName;
+    }
+
+    public void setItemName(String itemName) {
+        ItemName = itemName;
+    }
+
+    public LocalDateTime getAuctionStartTime() {
+        return auctionStartTime;
+    }
+
+    public void setAuctionStartTime(LocalDateTime auctionStartTime) {
+        this.auctionStartTime = auctionStartTime;
+    }
+
+    public int getAuctionDurationMinutes() {
+        return auctionDurationMinutes;
+    }
+
+    public void setAuctionDurationMinutes(int auctionDurationMinutes) {
+        this.auctionDurationMinutes = auctionDurationMinutes;
     }
 }

@@ -2,9 +2,13 @@ package com.project.BidIT.Controller;
 
 import com.project.BidIT.Compontents.JwtUtil;
 import com.project.BidIT.DTO.AdminDto;
+import com.project.BidIT.Repo.AdminRepo;
+import com.project.BidIT.Repo.ItemRepository;
 import com.project.BidIT.Service.Admin.AdminService;
+import com.project.BidIT.Service.Item.ItemService;
 import com.project.BidIT.entity.Admin;
-import com.project.BidIT.entity.User;
+import com.project.BidIT.entity.Item;
+import com.project.BidIT.enums.Status;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,6 +24,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -33,7 +40,19 @@ public class AdminController {
     private JwtUtil jwtUtil;
 
     @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private AdminRepo adminRepo;
+
+
+
     // Show registration form
     @GetMapping("/register")
     public String userRegister(Model model){
@@ -162,5 +181,36 @@ public class AdminController {
         return "redirect:/admin/login";
     }
 
+    @GetMapping("/auctions")
+    public String adminAuctions(Model model, Principal principal) {
+
+        Admin admin = adminService.findAdminByEmail(principal.getName());
+
+
+        List<Item> pendingItems =
+                itemRepository.findByStatus(Status.PENDING);
+
+        model.addAttribute("items", pendingItems);
+        model.addAttribute("users", admin);
+
+        return "Admin/AdminItems";
+    }
+
+    @PostMapping("/startAuction/{itemId}")
+    @ResponseBody
+    public String startAuction(@PathVariable Long itemId, @RequestParam int durationMinutes) {
+        Item item = itemService.getItemById(itemId);
+
+        if (item.getAuctionStartTime() != null) {
+            return "ALREADY_STARTED";
+        }
+        System.out.println("🔥 item found = " + item);
+        item.setAuctionStartTime(LocalDateTime.now()); // mark start time
+        item.setAuctionDurationMinutes(durationMinutes);
+        System.out.println("Duration = " + durationMinutes);
+        item.setStatus(Status.ACTIVE);
+        itemRepository.save(item);
+        return "SUCCESS";
+    }
 
 }

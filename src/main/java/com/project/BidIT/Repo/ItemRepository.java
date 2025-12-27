@@ -3,6 +3,7 @@ package com.project.BidIT.Repo;
 import com.project.BidIT.entity.Item;
 import com.project.BidIT.entity.Category;
 import com.project.BidIT.entity.User;
+import com.project.BidIT.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +20,5 @@ public interface ItemRepository extends JpaRepository<Item,Long> {
         // find arenas by category
         List<Item> findByCategory(Category category);
 
-
+        List<Item> findByStatus(Status status);
 }

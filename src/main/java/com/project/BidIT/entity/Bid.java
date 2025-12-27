@@ -19,6 +19,7 @@ public class Bid {
     private User user; // bidder
 
 
+
     private LocalDateTime bidTime;
 
     private double bidAmount;

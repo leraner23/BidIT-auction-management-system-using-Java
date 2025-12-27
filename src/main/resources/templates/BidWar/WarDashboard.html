@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Details | BidIT</title>
+
+    <!-- Fragment & Page CSS -->
+    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+    <link rel="stylesheet" th:href="@{/Styles/WarDashCSS.css}">
+</head>
+<body>
+
+<div th:replace="Fragments  :: sidebar(${users})"></div>
+<div th:replace="Fragments  :: navbar"></div>
+
+<div class="main-content">
+
+    <!-- ================= ITEM DETAILS ================= -->
+    <div class="item-details-card">
+
+        <div class="item-image">
+            <img th:src="@{/items/{img}(img=${item.itemImage})}" alt="Item Image">
+        </div>
+
+        <div class="item-info">
+            <h2 th:text="${item.ItemName}">Item Name</h2>
+
+            <p class="description" th:text="${item.description}">
+                Item description
+            </p>
+
+            <div class="info-grid">
+                <span><strong>Status:</strong> <span th:text="${item.status}"></span></span>
+                <span><strong>Category:</strong> <span th:text="${item.category.name}"></span></span>
+                <span><strong>Rate:</strong> <span th:text="${item.rate}"></span></span>
+                <span><strong>Base Amount:</strong> Rs. <span th:text="${item.amount}"></span></span>
+                <span><strong>Placed By:</strong> <span th:text="${item.user.username}"></span></span>
+            </div>
+
+            <!-- TIMER -->
+            <div class="auction-timer">
+                ⏳ Total Auction Time Left: <span id="timer">10:00</span>
+            </div>
+
+            <!-- BID BUTTON -->
+            <div class="bid-action">
+                <button class="bid-btn" onclick="openBidForm()">🚀 Bid Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= BID WAR ================= -->
+    <div class="bid-war">
+
+        <h3>🔥 Bid War</h3>
+
+
+        <!-- Bid List -->
+        <div class="bid-list">
+            <div class="bid-card" th:each="bid : ${bids}">
+                <span class="bidder" th:text="${bid.user.username}">User</span>
+                <span class="amount">Rs. <span th:text="${bid.bidAmount}"></span></span>
+                <span class="time"
+                      th:text="${#temporals.format(bid.bidTime,'HH:mm:ss')}">
+                </span>
+            </div>
+        </div>
+        <div class="bid-action">
+            <button class="bid-btn"
+                    th:disabled="${!canBid}"
+                    onclick="openBidForm()">
+                🚀 Bid Now
+            </button>
+
+            <p class="error-message" th:if="${!canBid}">
+                ❌ Not enough budget to place a higher bid
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- ================= BID MODAL ================= -->
+<div id="bidModal" class="bid-modal">
+
+    <div class="bid-modal-content">
+
+        <span class="close" onclick="closeBidForm()">&times;</span>
+
+        <h3>Place Your Bid</h3>
+
+        <form th:action="@{/auction/bidwar/place}" method="post">
+
+            <!-- Item ID -->
+            <input type="hidden" name="itemId" th:value="${item.itemId}">
+
+            <!-- Bidder -->
+            <label>Bidder</label>
+            <input type="text"
+                   th:value="${users.username}"
+                   readonly>
+
+            <!-- Base Amount -->
+            <label>Base Amount</label>
+            <input type="text"
+                   th:value="${item.amount}"
+                   readonly>
+
+            <!-- Highest Bid -->
+            <label>Current Highest Bid</label>
+            <input type="text"
+                   th:value="${highestBidAmount}"
+                   readonly>
+
+            <label>Your Available Budget</label>
+            <input type="text" th:value="${budget.total}" readonly>
+
+
+            <!-- Bid Amount -->
+            <label>Your Bid Amount</label>
+            <input type="number"
+                   name="bidAmount"
+                   step="0.01"
+                   th:attr="min=${minBid}, max=${maxBid}"
+                   th:disabled="${!canBid}"
+
+                   placeholder="Enter bid amount"
+                   required>
+
+            <div class="error-message" th:if="${bidError}" th:text="${bidError}"></div>
+
+            <button type="submit">Confirm Bid</button>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+    function openBidForm() {
+        document.getElementById("bidModal").style.display = "block";
+    }
+
+    function closeBidForm() {
+        document.getElementById("bidModal").style.display = "none";
+    }
+     window.onload = function() {
+        if(document.querySelector('.error-message')) {
+            openBidForm();
+        }
+    }
+
+
+    function sortBids() {
+    const bidList = document.querySelector('.bid-list');
+    const bids = Array.from(bidList.querySelectorAll('.bid-card'));
+
+    bids.sort((a, b) => {
+        const amountA = parseFloat(a.querySelector('.amount span').innerText);
+        const amountB = parseFloat(b.querySelector('.amount span').innerText);
+        return amountB - amountA; // descending
+    });
+
+    // Remove all and append in sorted order
+    bids.forEach(bid => bidList.appendChild(bid));
+}
+
+// Call once on page load
+sortBids();
+
+// timer set
+    function startAuctionTimer(durationMinutes) {
+    const timerElement = document.getElementById('timer');
+    const bidButton = document.getElementById('bidBtn');
+
+    let time = durationMinutes * 60; // convert minutes to seconds
+
+    const interval = setInterval(() => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+
+        // Format as mm:ss
+        timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        if (time <= 0) {
+            clearInterval(interval);
+            timerElement.textContent = "00:00";
+            bidButton.disabled = true; // Disable bid button
+            bidButton.style.opacity = 0.5; // Optional visual
+        }
+
+        time--;
+    }, 1000);
+}
+
+// Start timer on page load
+window.onload = function() {
+    startAuctionTimer(10); // 10 minutes countdown
+}
+</script>
+
+</body>
+</html>

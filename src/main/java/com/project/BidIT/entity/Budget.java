@@ -1,40 +1,26 @@
 package com.project.BidIT.entity;
 
 import jakarta.persistence.*;
-
-
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 public class Budget {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long budgetId;
 
-    @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
 
-    @Column(name="Amount",nullable = false)
-    private float amount;
+    @Column(name = "total_amount",nullable = true)
+    private float total;
 
-    @Column(name = "payment_from", nullable = false)
-    private String accountInfo;
+    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions;
 
-    @Column(name = "Time", nullable = false)
-    private LocalDate time;
-
-    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
-    private List<BudgetTranscation> transactions;
-
-    public List<BudgetTranscation> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<BudgetTranscation> transactions) {
-        this.transactions = transactions;
-    }
+    // Getters and Setters
 
     public long getBudgetId() {
         return budgetId;
@@ -52,27 +38,19 @@ public class Budget {
         this.user = user;
     }
 
-    public float getAmount() {
-        return amount;
+    public float getTotal() {
+        return total;
     }
 
-    public void setAmount(float amount) {
-        this.amount = amount;
+    public void setTotal(float total) {
+        this.total = total;
     }
 
-    public String getAccountInfo() {
-        return accountInfo;
+    public List<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public void setAccountInfo(String accountInfo) {
-        this.accountInfo = accountInfo;
-    }
-
-    public LocalDate getTime() {
-        return time;
-    }
-
-    public void setTime(LocalDate time) {
-        this.time = time;
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

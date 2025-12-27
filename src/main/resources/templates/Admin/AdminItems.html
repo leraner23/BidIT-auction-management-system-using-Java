@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>Auctions Items Control</title>
+</head>
+<body>
+<h2>Pending Auctions</h2>
+
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Base Amount</th>
+        <th> Duration (minutes) </th>
+        <th>Action</th>
+    </tr>
+
+    <tr th:each="item : ${items}">
+        <td th:text="${item.description}"></td>
+        <td th:text="${item.amount}"></td>
+        <td>
+            <input type="number"  placeholder="Minutes" th:id="'duration-' + ${item.itemId}">
+        </td>
+        <td>
+            <button th:onclick="'startAuction(' + ${item.itemId} + ')'">
+                Start Auction
+            </button>
+        </td>
+    </tr>
+</table>
+<script>
+    function startAuction(itemId) {
+
+        // 1️⃣ Get duration from input
+        const durationInput = document.getElementById("duration-" + itemId);
+        const duration = durationInput.value;
+
+        if (!duration || duration <= 0) {
+            alert("Please enter valid auction duration");
+            return;
+        }
+
+        // 2️⃣ Call backend with duration as query param
+        fetch(`/admin/startAuction/${itemId}?durationMinutes=` + duration, {
+            method: "POST"
+        })
+        .then(res => res.text())
+        .then(msg => {
+            alert(msg);
+            location.reload();
+        })
+        .catch(err => console.error(err));
+    }
+</script>
+
+
+</body>
+</html>

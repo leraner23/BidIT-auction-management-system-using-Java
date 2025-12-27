@@ -23,13 +23,14 @@ public class ItemMapping {
         Category category = categoryRepo.findById(dto.getCategoryId()).orElse(null);
         item.setCategory(category);
         item.setBidDetails(dto.getBidDetails());
-        item.setBid(dto.getBid());  // optional
+        // optional
         item.setRate(dto.getRate());
         item.setDescription(dto.getDescription());
         item.setAmount(dto.getAmount());
         item.setStatus(dto.getStatus());
         item.setItemImage(savedImageName);  // must be stored manually
-
+        item.setAuctionDurationMinutes(dto.getAuctionDurationMinutes());
+        item.setAuctionStartTime(dto.getAuctionStartTime());
         return item;
     }
 
@@ -40,13 +41,14 @@ public class ItemMapping {
         dto.setUser(item.getUser());
         dto.setBidDetails(item.getBidDetails());
         dto.setCategoryId(item.getCategory() != null ? item.getCategory().getCategoryId() : null);
-        dto.setBid(item.getBid());
+
         dto.setRate(item.getRate());
         dto.setDescription(item.getDescription());
         dto.setAmount(item.getAmount());
         dto.setStatus(item.getStatus());
+        dto.setAuctionDurationMinutes(item.getAuctionDurationMinutes());
+        dto.setAuctionStartTime(item.getAuctionStartTime());
 
-        // MultipartFile cannot be set here
 
         return dto;
     }

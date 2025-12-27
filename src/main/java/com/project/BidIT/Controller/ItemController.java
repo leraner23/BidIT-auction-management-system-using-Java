@@ -100,11 +100,13 @@ return "ItemADDForm";
         Item item = new Item();
         item.setUser(dto.getUser());
         item.setCategory(category);
-        item.setBid(dto.getBid());
+
         item.setRate(dto.getRate());
         item.setDescription(dto.getDescription());
         item.setAmount(dto.getAmount());
-        item.setStatus(dto.getStatus());
+        item.setStatus(Status.PENDING);
+        item.setAuctionStartTime(null);
+        item.setAuctionDurationMinutes(0);
         item.setItemImage(imageName);
         itemRepository.save(item);
 
@@ -138,7 +140,7 @@ return "ItemADDForm";
         User users = userRepository.findByEmail(email).orElse(null);
 
         if (users == null) return "redirect:/login";
-
+        model.addAttribute("users",users);
         model.addAttribute("category", new Category());
         return "CategoryAddForm";
 

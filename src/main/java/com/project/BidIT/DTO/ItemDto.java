@@ -12,6 +12,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 public class ItemDto {
     private Long itemId;
 
@@ -27,6 +29,9 @@ public class ItemDto {
     private Rate rate;
 
     private String description;
+
+    private int auctionDurationMinutes;
+    private LocalDateTime auctionStartTime;
 
     @Positive
     private double amount;
@@ -111,5 +116,21 @@ public class ItemDto {
 
     public void setBidDetails(BidDetails bidDetails) {
         this.bidDetails = bidDetails;
+    }
+
+    public int getAuctionDurationMinutes() {
+        return auctionDurationMinutes;
+    }
+
+    public void setAuctionDurationMinutes(int auctionDurationMinutes) {
+        this.auctionDurationMinutes = auctionDurationMinutes;
+    }
+
+    public LocalDateTime getAuctionStartTime() {
+        return auctionStartTime;
+    }
+
+    public void setAuctionStartTime(LocalDateTime auctionStartTime) {
+        this.auctionStartTime = auctionStartTime;
     }
 }
