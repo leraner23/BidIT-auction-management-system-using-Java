@@ -1,12 +1,14 @@
 package com.project.BidIT.Controller;
 
 import com.project.BidIT.DTO.ItemDto;
+import com.project.BidIT.Repo.AdminRepo;
 import com.project.BidIT.Repo.CategoryRepo;
 import com.project.BidIT.Repo.ItemRepository;
 import com.project.BidIT.Repo.UserRepository;
 import com.project.BidIT.Service.CategoryService;
 import com.project.BidIT.Service.Item.ItemService;
 import com.project.BidIT.Service.User.UserService;
+import com.project.BidIT.entity.Admin;
 import com.project.BidIT.entity.Category;
 import com.project.BidIT.entity.Item;
 import com.project.BidIT.entity.User;
@@ -21,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,6 +46,9 @@ public class ItemController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AdminRepo adminRepo;
     @Autowired
     private CategoryService categoryService;
     @Autowired
@@ -108,27 +114,39 @@ return "ItemADDForm";
         item.setAuctionStartTime(null);
         item.setAuctionDurationMinutes(0);
         item.setItemImage(imageName);
+        item.setItemName(dto.getItemName());
         itemRepository.save(item);
 
         return "redirect:/item/dashboard";
     }
 
     @GetMapping("/dashboard")
-    public  String ItemDashboard (Model model, Principal principal){
+    public String ItemDashboard(Model model, Principal principal) {
 
         if (principal == null) return "redirect:/login";
 
         String email = principal.getName();
-        User users = userRepository.findByEmail(email).orElse(null);
 
-        if (users == null) return "redirect:/login";
+        // Check in User table
+        User currentUser = userRepository.findByEmail(email).orElse(null);
+
+        // Check in Admin table
+        Admin currentAdmin = adminRepo.findAdminByEmail(email).orElse(null);
+
+
+        if (currentUser == null && currentAdmin == null) return "redirect:/login";
 
         model.addAttribute("itemDto", new ItemDto());
         model.addAttribute("items", itemRepository.findAll());
-        model.addAttribute("users", users);
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("rates", Rate.values());
         model.addAttribute("statuses", Status.values());
+
+
+        // Pass the current logged-in user/admin to the template
+        model.addAttribute("users", currentUser);   // null if admin
+        model.addAttribute("currentAdmin", currentAdmin); // null if user
+
         return "ItemDashBoard";
     }
 
@@ -197,7 +215,7 @@ return "ItemADDForm";
         item.setRate(itemDto.getRate());
         item.setStatus(itemDto.getStatus());
         item.setUser(users);
-
+        item.setItemName(itemDto.getItemName());
         Category category = categoryRepo.findById(itemDto.getCategoryId()).orElse(null);
         item.setCategory(category);
 
@@ -220,8 +238,12 @@ return "ItemADDForm";
 
 
     @GetMapping("/delete/{id}")
-    public String deleteItem(@PathVariable Long id) {
-        itemService.deleteItem(id);
+    public String deleteItem(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            itemService.deleteItem(id);
+        } catch (RuntimeException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        }
         return "redirect:/item/dashboard";
     }
 }

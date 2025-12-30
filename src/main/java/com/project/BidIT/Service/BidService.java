@@ -1,12 +1,13 @@
 package com.project.BidIT.Service;
 
+import com.project.BidIT.Repo.BidDetailsRepo;
 import com.project.BidIT.Repo.BidRepo;
 
 import com.project.BidIT.Repo.BudgetRepo;
-import com.project.BidIT.entity.Bid;
-import com.project.BidIT.entity.Budget;
-import com.project.BidIT.entity.Item;
-import com.project.BidIT.entity.User;
+import com.project.BidIT.Repo.ItemRepository;
+import com.project.BidIT.entity.*;
+import com.project.BidIT.enums.Status;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,10 @@ public class BidService {
 
     @Autowired
     private BidRepo bidRepo;
-
+    @Autowired
+    private ItemRepository itemRepository;
+    @Autowired
+    private BidDetailsRepo bidDetailsRepo;
     @Autowired
     private BudgetRepo budgetRepository;
     // Place a new bid
@@ -71,10 +75,68 @@ public class BidService {
         return getBidsForItem(item).size() + 1; // 1-based count
     }
 
-    public int getBidTimeLimit(Item item) {
-        int nextBid = getNextBidNumber(item);
-        if (nextBid == 1) return 30;
-        if (nextBid == 2) return 40;
-        return 0; // After 3rd bid, bidding closed
+
+    public void deleteBidDetails(Long bidDetailsId) {
+
+        BidDetails bidD = bidDetailsRepo.findById(bidDetailsId)
+                .orElseThrow(() -> new RuntimeException("Bid details not found"));
+
+        Item item = bidD.getBid().getItem();
+
+        if (item.getStatus() == Status.SOlD) {
+            throw new RuntimeException("Cannot delete a sold item!");
+        }
+
+        bidDetailsRepo.delete(bidD);
+    }
+
+
+    @Transactional
+    public void finalizeAuction(Item item) {
+
+        // 1️⃣ Prevent duplicate finalization
+        if (item.getStatus() == Status.SOlD) {
+            return;
+        }
+
+
+        // 2️⃣ Find highest bid for the item
+        Optional<Bid> highestBidOpt =
+                bidRepo.findTopByItemOrderByBidAmountDesc(item);
+
+        // 3️⃣ If no bids placed → mark auction expired
+        if (highestBidOpt.isEmpty()) {
+            item.setStatus(Status.EXPIRED); // use SOLD if you don't have EXPIRED
+            itemRepository.save(item);
+            return;
+        }
+
+        Bid highestBid = highestBidOpt.get();
+        User winner = highestBid.getUser();
+        double finalAmount = highestBid.getBidAmount();
+        Budget winnerBudget = budgetRepository.findByUser(winner)
+                .orElseThrow(() -> new RuntimeException("Winner has no budget!"));
+
+        if (winnerBudget.getTotal() < finalAmount) {
+            throw new RuntimeException("Winner does not have enough budget!");
+        }
+
+        float finalBidAmount = (float) finalAmount;
+        winnerBudget.setTotal(winnerBudget.getTotal() - finalBidAmount);
+        budgetRepository.save(winnerBudget);
+        // 4️⃣ Create BidDetails (winner info)
+        BidDetails bidDetails = new BidDetails();
+        bidDetails.setBid(highestBid);
+
+        bidDetails.setBuyer(highestBid.getUser());
+        bidDetails.setAmount(highestBid.getBidAmount());
+
+        bidDetailsRepo.save(bidDetails);
+
+        // 5️⃣ Update item
+        item.setStatus(Status.SOlD);
+        item.setBidDetails(bidDetails);
+
+        itemRepository.save(item);
     }
 }

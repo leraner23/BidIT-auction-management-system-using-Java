@@ -1,0 +1,70 @@
+/* Fragment spaces */
+.sidebar-fragment {
+    margin-bottom: 20px; /* space for sidebar fragment */
+}
+
+.navbar-fragment {
+    margin-bottom: 20px; /* space for navbar fragment */
+}
+
+/* Profile Container */
+.profile-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #f7f9fc;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4CAF50;
+}
+
+.profile-names .fullname {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.profile-names .username {
+    margin: 5px 0 0;
+    font-size: 16px;
+    color: #777;
+}
+
+/* Profile Info */
+.profile-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.info-item {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}

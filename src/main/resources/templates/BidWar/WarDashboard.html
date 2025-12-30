@@ -39,13 +39,9 @@
 
             <!-- TIMER -->
             <div class="auction-timer">
-                ⏳ Total Auction Time Left: <span id="timer">10:00</span>
+                ⏳ Total Auction Time Left: <span id="timer">00:00</span>
             </div>
 
-            <!-- BID BUTTON -->
-            <div class="bid-action">
-                <button class="bid-btn" onclick="openBidForm()">🚀 Bid Now</button>
-            </div>
         </div>
     </div>
 
@@ -67,13 +63,17 @@
         </div>
         <div class="bid-action">
             <button class="bid-btn"
-                    th:disabled="${!canBid}"
+                    th:disabled="${auctionEnded or !canBid}"
                     onclick="openBidForm()">
                 🚀 Bid Now
             </button>
 
             <p class="error-message" th:if="${!canBid}">
                 ❌ Not enough budget to place a higher bid
+            </p>
+
+            <p th:if="${auctionEnded}" class="error-message">
+                ⏰ Auction has ended
             </p>
         </div>
     </div>
@@ -134,69 +134,53 @@
 
     </div>
 </div>
+<div th:if="${auctionEnded and item.bidDetails != null}">
+    <h2 style="color:green">
+        🎉 Congratulations
+        <span th:text="${item.bidDetails.buyer.username}"></span>
+    </h2>
 
+    <p>
+        Winning Bid: Rs.
+        <span th:text="${item.bidDetails.amount}"></span>
+    </p>
+</div>
 <!-- ================= JS ================= -->
-<script>
+<script th:inline="javascript">
+
     function openBidForm() {
-        document.getElementById("bidModal").style.display = "block";
-    }
+       document.getElementById("bidModal").style.display = "block";
+   }
 
-    function closeBidForm() {
-        document.getElementById("bidModal").style.display = "none";
-    }
-     window.onload = function() {
-        if(document.querySelector('.error-message')) {
-            openBidForm();
-        }
-    }
+   function closeBidForm() {
+       document.getElementById("bidModal").style.display = "none";
+   }
+   let remainingSeconds = [[${remainingSeconds}]];
 
+   function startAuctionTimer() {
+       const timer = document.getElementById("timer");
 
-    function sortBids() {
-    const bidList = document.querySelector('.bid-list');
-    const bids = Array.from(bidList.querySelectorAll('.bid-card'));
+       const interval = setInterval(() => {
 
-    bids.sort((a, b) => {
-        const amountA = parseFloat(a.querySelector('.amount span').innerText);
-        const amountB = parseFloat(b.querySelector('.amount span').innerText);
-        return amountB - amountA; // descending
-    });
+           if (remainingSeconds <= 0) {
+               clearInterval(interval);
+               timer.innerText = "00:00";
+               location.reload(); // reload to show winner
+               return;
+           }
 
-    // Remove all and append in sorted order
-    bids.forEach(bid => bidList.appendChild(bid));
-}
+           const minutes = Math.floor(remainingSeconds / 60);
+           const seconds = remainingSeconds % 60;
 
-// Call once on page load
-sortBids();
+           timer.innerText =
+               minutes.toString().padStart(2,'0') + ":" +
+               seconds.toString().padStart(2,'0');
 
-// timer set
-    function startAuctionTimer(durationMinutes) {
-    const timerElement = document.getElementById('timer');
-    const bidButton = document.getElementById('bidBtn');
+           remainingSeconds--;
+       }, 1000);
+   }
 
-    let time = durationMinutes * 60; // convert minutes to seconds
-
-    const interval = setInterval(() => {
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
-
-        // Format as mm:ss
-        timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-        if (time <= 0) {
-            clearInterval(interval);
-            timerElement.textContent = "00:00";
-            bidButton.disabled = true; // Disable bid button
-            bidButton.style.opacity = 0.5; // Optional visual
-        }
-
-        time--;
-    }, 1000);
-}
-
-// Start timer on page load
-window.onload = function() {
-    startAuctionTimer(10); // 10 minutes countdown
-}
+   window.onload = startAuctionTimer;
 </script>
 
 </body>

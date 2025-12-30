@@ -19,6 +19,7 @@ public class ItemDto {
 
     private User user;
 
+    private String itemName;
     private Long categoryId;
 
     private Bid bid;
@@ -132,5 +133,13 @@ public class ItemDto {
 
     public void setAuctionStartTime(LocalDateTime auctionStartTime) {
         this.auctionStartTime = auctionStartTime;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 }

@@ -12,4 +12,5 @@ public interface ItemService {
     void deleteItem(Long itemId);
     Item updateItem(Item item);
     Item markAsSold(Item item, BidDetails bidDetails);
+    public long getRemainingSeconds(Item item);
 }

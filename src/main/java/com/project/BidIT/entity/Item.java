@@ -16,7 +16,7 @@ public class Item {
     @JoinColumn(name = "Place_id", referencedColumnName = "userId")
     private User user;
 
-    private String ItemName;
+    private String itemName;
 
     @ManyToOne
     @JoinColumn(name = "Category", referencedColumnName = "categoryId")
@@ -122,11 +122,11 @@ public class Item {
     }
 
     public String getItemName() {
-        return ItemName;
+        return itemName;
     }
 
     public void setItemName(String itemName) {
-        ItemName = itemName;
+       this.itemName = itemName;
     }
 
     public LocalDateTime getAuctionStartTime() {

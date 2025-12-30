@@ -31,6 +31,7 @@ public class ItemMapping {
         item.setItemImage(savedImageName);  // must be stored manually
         item.setAuctionDurationMinutes(dto.getAuctionDurationMinutes());
         item.setAuctionStartTime(dto.getAuctionStartTime());
+        item.setItemName(dto.getItemName());
         return item;
     }
 
@@ -48,7 +49,7 @@ public class ItemMapping {
         dto.setStatus(item.getStatus());
         dto.setAuctionDurationMinutes(item.getAuctionDurationMinutes());
         dto.setAuctionStartTime(item.getAuctionStartTime());
-
+        dto.setItemName(item.getItemName());
 
         return dto;
     }

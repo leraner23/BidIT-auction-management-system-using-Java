@@ -7,23 +7,22 @@
 <body>
 
 <!-- ================= SIDEBAR FRAGMENT ================= -->
-<div th:fragment="sidebar(users)">
+<div th:fragment="sidebar(admin)">
     <aside class="sidebar">
         <div class="user-profile-summary">
-            <img th:src="@{/users/{img}(img=${users.userImage})}" alt="User Image" class="profile-image">
-            <h3 th:text="${users.fullName}"></h3>
+            <img th:if="${admin != null and admin.userImage != null}"
+                 th:src="@{/admins/{img}(img=${admin.userImage})}">
+            <h3 th:text="${admin != null ? admin.fullName : 'Admin'}"></h3>
         </div>
 
         <nav class="sidebar-nav">
             <ul>
-                <li><a th:href="@{/user/dashboard}" class="active">🏠 Dashboard</a></li>
+                <li><a th:href="@{/admin/dashboard}" class="active">🏠 Dashboard</a></li>
                 <li><a th:href="@{/item/dashboard}">📦 Orders</a></li>
-                <li><a th:href="@{/bid/dashboard}">💰 Bids</a></li>
-                <li><a th:href="@{/budget/dashboard}">💳 Budget</a></li>
                 <li><a th:href="@{/auction/arena}">⚔️ Arena</a></li>
-
+                <li> <a th:href="@{/admin/auctions}">Item Control</a></li>
                 <li>
-                    <form th:action="@{/user/logout}" method="post" class="logout-form">
+                    <form th:action="@{/admin/logout}" method="post" class="logout-form">
                         <button type="submit" class="logout-btn">➡️ Logout</button>
                     </form>
                 </li>

@@ -20,6 +20,7 @@ public interface BidRepo extends JpaRepository<Bid, Long> {
     // Get all bids for a specific item
     List<Bid> findByItem(Item item);
 
+
     // Get the latest bid by a user
     Optional<Bid> findTopByUserOrderByBidTimeDesc(User user);
 

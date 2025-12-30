@@ -166,7 +166,7 @@ public class AdminController {
 
         String email = principal.getName(); // get email from Jwt
         Admin loggedAdmin = adminService.findAdminByEmail(email); // fetch the logged user email
-        model.addAttribute("admins",loggedAdmin);
+        model.addAttribute("admin",loggedAdmin);
         return "Admin/AdminDashboard";
     }
 

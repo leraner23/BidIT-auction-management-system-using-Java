@@ -11,6 +11,7 @@ import com.project.BidIT.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -75,6 +76,24 @@ public class ItemServiceImpl implements ItemService {
         item.setBidDetails(savedBidDetails);
         item.setStatus(Status.SOlD);
         return itemRepository.save(item);
+    }
+
+    @Override
+    public long getRemainingSeconds(Item item) {
+
+        if (item.getAuctionStartTime() == null) return 0;
+
+        LocalDateTime endTime =
+                item.getAuctionStartTime()
+                        .plusMinutes(item.getAuctionDurationMinutes());
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if (now.isAfter(endTime)) {
+            return 0;
+        }
+
+        return java.time.Duration.between(now, endTime).getSeconds();
     }
 }
 

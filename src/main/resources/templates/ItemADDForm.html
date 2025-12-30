@@ -22,6 +22,9 @@
     <input type="hidden" th:field="*{user}" th:value="${users}" />
 
 
+    <label>Item Name:</label>
+    <input type="text" th:field="*{itemName}" required>
+
     <label>Category:</label>
     <select th:field="*{categoryId}">
         <option th:each="c : ${categories}" th:value="${c.categoryId}" th:text="${c.name}"></option>

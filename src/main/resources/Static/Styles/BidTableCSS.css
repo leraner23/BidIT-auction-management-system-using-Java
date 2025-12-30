@@ -1,0 +1,93 @@
+/* ===============================
+   BID TABLE PAGE (SCOPED ONLY)
+   =============================== */
+
+.bid-table-page {
+    padding: 25px;
+    margin-left: 260px; /* adjust to sidebar width */
+    background-color: #f4f6f9;
+}
+
+/* Page title */
+.bid-table-page .page-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 20px;
+}
+
+/* Table container */
+.bid-table-page .table-wrapper {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    overflow-x: auto;
+}
+
+/* Table */
+.bid-table-page .bid-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1200px;
+    font-size: 14px;
+}
+
+/* Header */
+.bid-table-page .bid-table thead {
+    background-color: #111827;
+}
+
+.bid-table-page .bid-table th {
+    padding: 14px 12px;
+    color: #ffffff;
+    font-weight: 500;
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* Body cells */
+.bid-table-page .bid-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Description column */
+.bid-table-page .bid-table td.desc {
+    max-width: 220px;
+    white-space: normal;
+    line-height: 1.4;
+}
+
+/* Row hover */
+.bid-table-page .bid-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Image */
+.bid-table-page .item-img {
+    width: 60px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+
+/* Delete button */
+.bid-table-page .delete-btn {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: #ffffff;
+    background-color: #dc2626;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.bid-table-page .delete-btn:hover {
+    background-color: #b91c1c;
+}

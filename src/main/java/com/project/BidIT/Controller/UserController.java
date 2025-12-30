@@ -165,4 +165,16 @@ public class UserController {
         return "redirect:/user/login";
     }
 
+    @GetMapping("/profile")
+    public String profile(Model model, Principal principal){
+        System.out.println("Principal: " + principal);
+        if (principal == null) {
+            return "redirect:/user/login"; // extra safety
+        }
+        String email = principal.getName();
+        User loggedUser = userService.findByEmail(email);
+        model.addAttribute("users",loggedUser);
+        return "User/Profile";
+    }
+
 }

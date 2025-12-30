@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+    <link rel="stylesheet" th:href="@{/Styles/profile.css}">
+</head>
+<body>
+<!-- Sidebar Fragment -->
+<div th:replace="Fragments :: sidebar(${users})" class="sidebar-fragment"></div>
+
+<!-- Navbar Fragment -->
+<div th:replace="Fragments :: navbar" class="navbar-fragment"></div>
+
+<!-- Profile Container -->
+<div class="profile-container">
+    <div class="profile-header">
+        <img th:src="@{/users/{img}(img=${users.userImage})}" alt="User Image" class="profile-image">
+        <div class="profile-names">
+            <h2 class="fullname" th:text="${users.fullName}"></h2>
+            <h4 class="username" th:text="@{'@' + ${users.username}}"></h4>
+        </div>
+    </div>
+
+    <div class="profile-info">
+        <div class="info-item">
+            <span class="info-label">Email:</span>
+            <span th:text="${users.email}"></span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Age:</span>
+            <span th:text="${users.userAge}"></span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Address:</span>
+            <span th:text="${users.PAddress}"></span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Phone:</span>
+            <span th:text="${users.phone}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

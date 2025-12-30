@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bids</title>
+    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+    <link rel="stylesheet" th:href="@{/Styles/BidTableCSS.css}">
+
+</head>
+<body>
+<!-- Sidebar Fragment -->
+<div th:replace="Fragments :: sidebar(${users})" class="sidebar-fragment"></div>
+
+<!-- Navbar Fragment -->
+<div th:replace="Fragments :: navbar" class="navbar-fragment"></div>
+<div class="bid-table-page">
+
+    <h2 class="page-title">Bids Table</h2>
+
+    <div class="table-wrapper">
+        <table class="bid-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Item Name</th>
+                <th>Image</th>
+                <th>Buyer</th>
+                <th>Seller</th>
+                <th>Base Price</th>
+                <th>Category</th>
+                <th>Bid Amount</th>
+                <th>Review</th>
+                <th>Description</th>
+                <th>Bid Time</th>
+                <th>Rate</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="bidD : ${bidDetails}">
+                <td th:text="${bidD.bid.bidId}"></td>
+                <td th:text="${bidD.bid.item.itemName}"></td>
+
+                <td>
+                    <img class="item-img"
+                         th:src="@{/items/{img}(img=${bidD.bid.item.itemImage})}"
+                         alt="Item Image">
+                </td>
+
+                <td th:text="${bidD.buyer.username}"></td>
+                <td th:text="${bidD.bid.item.user.username}"></td>
+                <td th:text="${bidD.bid.item.amount}"></td>
+                <td th:text="${bidD.bid.item.category.name}"></td>
+                <td th:text="${bidD.amount}"></td>
+                <td th:text="${bidD.review}"></td>
+                <td class="desc" th:text="${bidD.bid.item.description}"></td>
+                <td th:text="${bidD.bid.bidTime}"></td>
+                <td th:text="${bidD.bid.item.rate}"></td>
+
+                <td>
+                    <a class="delete-btn"
+                       th:href="@{/bid/delete/{id}(id=${bidD.bidDetailsId})}"
+                       onclick="return confirm('Are you sure?')">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script th:if="${errorMessage != null}">
+    alert('[[${errorMessage}]]');
+</script>
+</body>
+</html>

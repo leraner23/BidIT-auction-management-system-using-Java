@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -65,6 +66,12 @@ public class AuctionController {
 
         Item item = itemService.getItemById(id);
 
+        long remainingSeconds = itemService.getRemainingSeconds(item);
+        // 🔹 STEP 2.2: FINALIZE AUCTION IF TIME IS OVER
+        if (remainingSeconds == 0 && item.getStatus() != Status.SOlD) {
+            bidService.finalizeAuction(item);
+        }
+
         double highestBidAmount = bidService.getHighestBidForItem(item)
                 .map(Bid::getBidAmount)
                 .orElse(item.getAmount());
@@ -94,7 +101,8 @@ public class AuctionController {
         model.addAttribute("highestBidAmount", highestBidAmount);
         model.addAttribute("auctionStartTime", item.getAuctionStartTime());
         model.addAttribute("auctionDuration", item.getAuctionDurationMinutes());
-
+        model.addAttribute("remainingSeconds", remainingSeconds);
+        model.addAttribute("auctionEnded", remainingSeconds == 0);
         return "BidWar/WarDashboard";
     }
 
@@ -113,6 +121,14 @@ public class AuctionController {
         Budget budget = budgetRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Budget not found"));
 
+        LocalDateTime endTime =
+                item.getAuctionStartTime()
+                        .plusMinutes(item.getAuctionDurationMinutes());
+
+        if (LocalDateTime.now().isAfter(endTime)) {
+            model.addAttribute("bidError", "⏰ Auction has already ended!");
+            return "redirect:/auction/bidwar/" + itemId;
+        }
         try {
             bidService.placeBid(user, item, bidAmount);
             return "redirect:/auction/bidwar/" + itemId;
