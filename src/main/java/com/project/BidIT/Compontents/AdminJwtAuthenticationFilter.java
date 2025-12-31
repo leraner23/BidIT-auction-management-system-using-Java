@@ -42,7 +42,7 @@ public class AdminJwtAuthenticationFilter extends OncePerRequestFilter {
         // 1️⃣ Read JWT from cookie
         if (request.getCookies() != null) {
             Cookie jwtCookie = Arrays.stream(request.getCookies())
-                    .filter(c -> c.getName().equals("jwt_token"))
+                    .filter(c -> c.getName().equals("admin_jwt_token"))
                     .findFirst()
                     .orElse(null);
 

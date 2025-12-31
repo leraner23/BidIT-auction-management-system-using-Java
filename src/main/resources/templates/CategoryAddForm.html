@@ -5,15 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Category</title>
     <link rel="stylesheet" th:href="@{/Styles/formCategory.css}">
-    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+    <link th:if="${users != null}" rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+    <link th:if="${admin != null}" rel="stylesheet" th:href="@{/Styles/AdminfragmentCSS.css}">
 </head>
 <body>
-<div th:replace="Fragments  :: sidebar(${users})"></div>
-<div th:replace="Fragments  :: navbar"></div>
+<div th:if="${users != null}">
+    <div th:replace="Fragments :: sidebar(${users})"></div>
+    <div th:replace="Fragments :: navbar"></div>
+</div>
+
+<!-- ================= ADMIN FRAGMENTS ================= -->
+<div th:if="${admin != null}">
+    <div th:replace="Admin/AdminFragment :: sidebar(${admin})"></div>
+    <div th:replace="Admin/AdminFragment :: navbar"></div>
+</div>
 <div class="form-container">
     <h2>Add New Category</h2>
 
-    <form th:action="@{/item/category/save}" th:object="${category}" method="post">
+    <form
+            th:action="${admin != null} ? @{/item/category/admin/save} : @{/item/category/save}"
+            th:object="${category}"
+            method="post">
 
         <!-- Category Name -->
         <label for="name">Category Name:</label>

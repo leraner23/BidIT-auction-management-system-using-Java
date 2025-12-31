@@ -3,13 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Auction Dashboard | BidIT</title>
-    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+    <link th:if="${users != null}" rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+
     <link rel="stylesheet" th:href="@{/Styles/auctionDashboardCSS.css}">
+    <link th:if="${admin != null}" rel="stylesheet" th:href="@{/Styles/AdminfragmentCSS.css}">
 </head>
 <body>
+<!-- ================= USER FRAGMENTS ================= -->
+<div th:if="${users != null}">
+    <div th:replace="Fragments :: sidebar(${users})"></div>
+    <div th:replace="Fragments :: navbar"></div>
+</div>
 
-<div th:replace="Fragments  :: sidebar(${users})"></div>
-<div th:replace="Fragments  :: navbar"></div>
+<!-- ================= ADMIN FRAGMENTS ================= -->
+<div th:if="${admin != null}">
+    <div th:replace="Admin/AdminFragment :: sidebar(${admin})"></div>
+    <div th:replace="Admin/AdminFragment :: navbar"></div>
+</div>
 
 <div class="auction-container">
 
@@ -55,8 +65,9 @@
                         Rs. <span th:text="${item.amount}"></span>
                     </span>
                 </div>
-
                 <a th:href="@{/auction/bidwar/{id}(id=${item.itemId})}"
+                   th:classappend="${isAdminView} ? ' disabled-btn' : ''"
+                   th:onclick="${isAdminView} ? 'alert(\'Admins cannot join BidWar!\');return false;' : null"
                    class="bidwar-btn">
                     ⚔️ BidWar
                 </a>

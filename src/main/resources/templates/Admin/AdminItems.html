@@ -1,46 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <title>Auctions Items Control</title>
+    <link rel="stylesheet" th:href="@{/Styles/AdminfragmentCSS.css}">
+    <link rel="stylesheet" th:href="@{/Styles/AuctionItemCSS.css}">
 </head>
+
 <body>
-<h2>Pending Auctions</h2>
 
-<table>
-    <tr>
-        <th>Item</th>
-        <th>Base Amount</th>
-        <th> Duration (minutes) </th>
-        <th>Action</th>
-    </tr>
+<!-- Sidebar & Navbar -->
+<div th:replace="Admin/AdminFragment  :: sidebar(${admin})"></div>
+<div th:replace="Admin/AdminFragment  :: navbar"></div>
 
-    <tr th:each="item : ${items}">
-        <td th:text="${item.description}"></td>
-        <td th:text="${item.amount}"></td>
-        <td>
-            <input type="number"  placeholder="Minutes" th:id="'duration-' + ${item.itemId}">
-        </td>
-        <td>
-            <button th:onclick="'startAuction(' + ${item.itemId} + ')'">
-                Start Auction
-            </button>
-        </td>
-    </tr>
-</table>
+<!-- ================= MAIN CONTENT ================= -->
+<main class="auction-page">
+
+    <div class="page-header">
+        <h2>Pending Auctions</h2>
+        <p>Start auctions by setting duration in minutes</p>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="auction-table">
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Base Amount</th>
+                <th>Duration (minutes)</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.description}"></td>
+                <td>₹ <span th:text="${item.amount}"></span></td>
+                <td>
+                    <input type="number"
+                           min="1"
+                           placeholder="Minutes"
+                           class="duration-input"
+                           th:id="'duration-' + ${item.itemId}">
+                </td>
+                <td>
+                    <button class="start-btn"
+                            th:onclick="'startAuction(' + ${item.itemId} + ')'">
+                        ▶ Start
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
 <script>
     function startAuction(itemId) {
-
-        // 1️⃣ Get duration from input
         const durationInput = document.getElementById("duration-" + itemId);
         const duration = durationInput.value;
 
         if (!duration || duration <= 0) {
-            alert("Please enter valid auction duration");
+            alert("Please enter a valid auction duration");
             return;
         }
 
-        // 2️⃣ Call backend with duration as query param
         fetch(`/admin/startAuction/${itemId}?durationMinutes=` + duration, {
             method: "POST"
         })
@@ -52,7 +76,6 @@
         .catch(err => console.error(err));
     }
 </script>
-
 
 </body>
 </html>

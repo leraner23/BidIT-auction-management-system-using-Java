@@ -8,10 +8,12 @@ import com.project.BidIT.Service.Admin.AdminService;
 import com.project.BidIT.Service.Item.ItemService;
 import com.project.BidIT.entity.Admin;
 import com.project.BidIT.entity.Item;
+import com.project.BidIT.entity.User;
 import com.project.BidIT.enums.Status;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -141,7 +143,7 @@ public class AdminController {
 
             String token = jwtUtil.generateTokenAdmin(loggedAdmin);
 
-            Cookie cookie = new Cookie("jwt_token", token);
+            Cookie cookie = new Cookie("admin_jwt_token", token);
             cookie.setHttpOnly(true);
             cookie.setPath("/");
             cookie.setMaxAge(24 * 60 * 60);
@@ -157,16 +159,32 @@ public class AdminController {
             return "Admin/Adminlogin";
         }
     }
+
+//    @GetMapping("/dashboard")
+//    public String AdminDashboard(Model model, Principal principal){
+//        System.out.println("Principal: " + principal);
+//        if (principal == null) {
+//            return "redirect:/admin/login"; // extra safety
+//        }
+//
+//        String email = principal.getName(); // get email from Jwt
+//        Admin loggedAdmin = adminService.findAdminByEmail(email); // fetch the logged user email
+//        model.addAttribute("admin",loggedAdmin);
+//        return "Admin/AdminDashboard";
+//    }
+
+
     @GetMapping("/dashboard")
-    public String AdminDashboard(Model model, Principal principal){
-        System.out.println("Principal: " + principal);
-        if (principal == null) {
-            return "redirect:/admin/login"; // extra safety
+    public String AdminDashboard(Model model, Authentication authentication) {
+        System.out.println("Authentication: " + authentication);
+
+        if (authentication == null) {
+            return "redirect:/admin/login";
         }
 
-        String email = principal.getName(); // get email from Jwt
-        Admin loggedAdmin = adminService.findAdminByEmail(email); // fetch the logged user email
-        model.addAttribute("admin",loggedAdmin);
+        Admin loggedAdmin = (Admin) authentication.getPrincipal(); // cast to Admin
+        model.addAttribute("admin", loggedAdmin);
+
         return "Admin/AdminDashboard";
     }
 
@@ -174,7 +192,7 @@ public class AdminController {
 
     @PostMapping("/logout")
     public String logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie("jwt_token", null);
+        Cookie cookie = new Cookie("admin_jwt_token", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
@@ -182,17 +200,21 @@ public class AdminController {
     }
 
     @GetMapping("/auctions")
-    public String adminAuctions(Model model, Principal principal) {
+    public String adminAuctions(Model model, Authentication authentication) {
 
-        Admin admin = adminService.findAdminByEmail(principal.getName());
+        System.out.println("Authentication: " + authentication);
+
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+        Admin loggedAdmin = (Admin) authentication.getPrincipal(); // cast to Admin
+        model.addAttribute("admin", loggedAdmin);
 
 
         List<Item> pendingItems =
                 itemRepository.findByStatus(Status.PENDING);
 
         model.addAttribute("items", pendingItems);
-        model.addAttribute("users", admin);
-
         return "Admin/AdminItems";
     }
 
@@ -211,6 +233,19 @@ public class AdminController {
         item.setStatus(Status.ACTIVE);
         itemRepository.save(item);
         return "SUCCESS";
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model, Authentication authentication){
+        System.out.println("Authentication: " + authentication);
+
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+
+        Admin loggedAdmin = (Admin) authentication.getPrincipal(); // cast to Admin
+        model.addAttribute("admin", loggedAdmin);
+        return "Admin/AdminProfile";
     }
 
 }

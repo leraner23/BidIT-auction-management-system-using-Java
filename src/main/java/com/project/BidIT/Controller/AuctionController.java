@@ -5,6 +5,7 @@ import com.project.BidIT.Repo.BudgetRepo;
 import com.project.BidIT.Repo.CategoryRepo;
 import com.project.BidIT.Repo.ItemRepository;
 import com.project.BidIT.Repo.UserRepository;
+import com.project.BidIT.Service.Admin.AdminService;
 import com.project.BidIT.Service.BidService;
 import com.project.BidIT.Service.CategoryService;
 import com.project.BidIT.Service.Item.ItemService;
@@ -13,6 +14,7 @@ import com.project.BidIT.entity.*;
 
 import com.project.BidIT.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,8 @@ public class AuctionController {
     private CategoryRepo categoryRepo;
     @Autowired
     private UserService userService;
-
+@Autowired
+private AdminService adminService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -44,12 +47,12 @@ public class AuctionController {
     @Autowired
     private BidService bidService;
     @GetMapping("/arena")
-    public String getAuctionMap(Model model, Principal principal){
+    public String getAuctionMap(Model model, Principal principal, Authentication authentication){
     if(principal == null) return "redirect:/login";
         String email = principal.getName();
         User users = userRepository.findByEmail(email).orElse(null);
-
         if (users == null) return "redirect:/login";
+        model.addAttribute("isAdminView", false);
         model.addAttribute("users", users);
         model.addAttribute("items", itemRepository.findByStatus(Status.ACTIVE));
         return "BidWar/AuctionDashboard";
@@ -150,6 +153,20 @@ public class AuctionController {
 
             return "BidWar/WarDashboard";
         }
+    }
+
+    @GetMapping("/admin/arena")
+    public String getAdminAuctionMap(Model model, Authentication authentication){
+        System.out.println("Authentication: " + authentication);
+
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+        model.addAttribute("isAdminView", true);
+        Admin loggedAdmin = (Admin) authentication.getPrincipal(); // cast to Admin
+        model.addAttribute("admin", loggedAdmin);
+        model.addAttribute("items", itemRepository.findByStatus(Status.ACTIVE));
+        return "BidWar/AuctionDashboard";
     }
 
 

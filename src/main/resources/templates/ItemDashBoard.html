@@ -5,19 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders Dashboard</title>
     <link rel="stylesheet" th:href="@{/Styles/ItemDashboard.css}">
-    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+    <link th:if="${users != null}" rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+    <link th:if="${admin != null}" rel="stylesheet" th:href="@{/Styles/AdminfragmentCSS.css}">
 </head>
 <body>
 <header>
     <h1>Orders Dashboard</h1>
 </header>
 
-<div th:replace="Fragments  :: sidebar(${users})"></div>
-<div th:replace="Fragments  :: navbar"></div>
+<div th:if="${users != null}">
+    <div th:replace="Fragments :: sidebar(${users})"></div>
+    <div th:replace="Fragments :: navbar"></div>
+</div>
+
+<!-- ================= ADMIN FRAGMENTS ================= -->
+<div th:if="${admin != null}">
+    <div th:replace="Admin/AdminFragment :: sidebar(${admin})"></div>
+    <div th:replace="Admin/AdminFragment :: navbar"></div>
+</div>
 <main class="main-content">
 <section class="actions">
-    <button><a  th:href="@{/item/category}">Create Category</a></button>
-    <button><a  th:href="@{/item/add}">Add Item</a></button>
+
+    <button>
+        <a th:href="${users != null} ? @{/item/category} : @{/item/admin/category}">
+            <span th:text="${users != null} ? 'Create Category' : 'Admin Create Category'"></span>
+        </a>
+    </button>
+    <button>
+        <a th:href="${users != null} ? @{/item/add} : @{/item/admin/add}">
+            <span th:text="${users != null} ? 'Add Item' : 'Admin Add Item'"></span>
+        </a>
+    </button>
 </section>
 
 <section class="category-list">

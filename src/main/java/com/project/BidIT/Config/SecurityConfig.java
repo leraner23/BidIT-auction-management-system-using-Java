@@ -27,6 +27,7 @@ public class SecurityConfig {
         this.customUserService = customUserService;
         this.jwtUtil = jwtUtil;
 
+
     }
 
     @Bean
@@ -63,7 +64,7 @@ public class SecurityConfig {
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/","/favicon.ico", "/Styles/**", "/js/**", "/images/**",
-                                "/user/register", "/user/login","/admin/login","/admin/register","/delivery/login","/delivery/register").permitAll()
+                                "/user/register", "/user/login","/admin/login","/admin/register","/delivery/login","/delivery/register","/auction/admin/**").permitAll()
                         .anyRequest().authenticated() // all other endpoints require login
                 )
 

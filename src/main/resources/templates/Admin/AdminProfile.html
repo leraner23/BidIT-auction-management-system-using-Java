@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/Styles/AdminfragmentCSS.css}">
+    <link rel="stylesheet" th:href="@{/Styles/profile.css}">
+</head>
+<body>
+<div th:replace="Admin/AdminFragment  :: sidebar(${admin})"></div>
+<div th:replace="Admin/AdminFragment  :: navbar"></div>
+
+<!-- Profile Container -->
+<div class="profile-container">
+    <div class="profile-header">
+        <img th:src="@{/admins/{img}(img=${admin.userImage})}" alt="Admin Image" class="profile-image">
+        <div class="profile-names">
+            <h2 class="fullname" th:text="${admin.fullName}"></h2>
+            <h4 class="username" th:text="@{'@' + ${admin.username}}"></h4>
+        </div>
+    </div>
+
+    <div class="profile-info">
+        <div class="info-item">
+            <span class="info-label">Email:</span>
+            <span th:text="${admin.email}"></span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Gender:</span>
+            <span th:text="${admin.gender}"></span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Address:</span>
+            <span th:text="${admin.address}"></span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Phone:</span>
+            <span th:text="${admin.phone}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

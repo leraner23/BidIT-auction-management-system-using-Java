@@ -17,6 +17,7 @@ import com.project.BidIT.enums.Status;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,6 +54,8 @@ public class ItemController {
     private CategoryService categoryService;
     @Autowired
     private ItemService itemService;
+
+
 
     @Value("${file.upload.item.images}")
     private String uploadDir;
@@ -173,6 +176,7 @@ return "ItemADDForm";
 
     }
 
+
     @GetMapping("/edit/{id}")
     public String editItemForm(@PathVariable Long id, Model model, Principal principal) {
         if (principal == null) return "redirect:/login";
@@ -246,4 +250,70 @@ return "ItemADDForm";
         }
         return "redirect:/item/dashboard";
     }
+
+
+//Admin Side
+    @GetMapping("/admin/dashboard")
+    public String ItemAdminDashboard(Model model, Authentication authentication) {
+        System.out.println("Authentication: " + authentication);
+
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+
+        Admin loggedAdmin = (Admin) authentication.getPrincipal(); // cast to Admin
+        model.addAttribute("admin", loggedAdmin);
+        model.addAttribute("itemDto", new ItemDto());
+        model.addAttribute("items", itemRepository.findAll());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("rates", Rate.values());
+        model.addAttribute("statuses", Status.values());
+        model.addAttribute("currentAdmin",loggedAdmin);
+        return "ItemDashBoard";
+    }
+
+    @GetMapping("/admin/add")
+    public String addItemAdmin(Model model, Authentication authentication){
+        ItemDto itemDto = new ItemDto();
+
+        model.addAttribute("itemDto", new ItemDto());
+        System.out.println("Authentication: " + authentication);
+
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+
+        Admin loggedAdmin = (Admin) authentication.getPrincipal(); // cast to Admin
+        model.addAttribute("admin", loggedAdmin);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("rates", Rate.values());
+        model.addAttribute("statuses", Status.values());
+        return "Admin/AdminAddItem";
+    }
+
+
+    @GetMapping("/admin/category")
+    public String addAdminCategory(Model model,Authentication authentication){
+        System.out.println("Authentication: " + authentication);
+
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+
+        Admin loggedAdmin = (Admin) authentication.getPrincipal(); // cast to Admin
+        model.addAttribute("admin", loggedAdmin);
+        model.addAttribute("category", new Category());
+        return "CategoryAddForm";
+
+    }
+
+    @PostMapping("/category/admin/save")
+    public String addAdminCategory(Category category){
+        category.setName(category.getName());
+        categoryRepo.save(category);
+         return "redirect:/item/admin/dashboard";
+
+
+    }
+
 }

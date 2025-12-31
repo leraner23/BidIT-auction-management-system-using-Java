@@ -1,0 +1,94 @@
+/* ================= PAGE WRAPPER ================= */
+.auction-page {
+    margin-left: 260px;      /* sidebar width */
+    margin-top: 60px;        /* navbar height */
+    padding: 30px;
+    background: #f9fafb;
+    min-height: 100vh;
+}
+
+/* ================= HEADER ================= */
+.auction-page .page-header {
+    margin-bottom: 20px;
+}
+
+.auction-page .page-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.auction-page .page-header p {
+    font-size: 14px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+/* ================= TABLE ================= */
+.auction-page .table-wrapper {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    overflow-x: auto;
+}
+
+.auction-page .auction-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.auction-page .auction-table thead {
+    background: #f3f4f6;
+}
+
+.auction-page .auction-table th,
+.auction-page .auction-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+}
+
+.auction-page .auction-table th {
+    font-weight: 600;
+    color: #374151;
+}
+
+.auction-page .auction-table tr:hover {
+    background: #f9fafb;
+}
+
+/* ================= INPUT ================= */
+.auction-page .duration-input {
+    width: 100px;
+    padding: 6px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.auction-page .duration-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+}
+
+/* ================= BUTTON ================= */
+.auction-page .start-btn {
+    background: #16a34a;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.auction-page .start-btn:hover {
+    background: #15803d;
+}
+
+/* ================= EMPTY STATE (optional) ================= */
+.auction-page .auction-table tbody tr td {
+    color: #374151;
+}

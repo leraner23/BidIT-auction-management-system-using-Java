@@ -1,44 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
+
 </head>
 
 <body>
 
-<!-- ================= SIDEBAR FRAGMENT ================= -->
+<!-- ================= SIDEBAR ================= -->
 <div th:fragment="sidebar(admin)">
     <aside class="sidebar">
-        <div class="user-profile-summary">
-            <img th:if="${admin != null and admin.userImage != null}"
-                 th:src="@{/admins/{img}(img=${admin.userImage})}">
+
+        <!-- Profile -->
+        <div class="sidebar-profile">
+            <img th:src="@{/admins/{img}(img=${admin.userImage})}"
+                 alt="Admin Profile"
+                 class="profile-img">
+
             <h3 th:text="${admin != null ? admin.fullName : 'Admin'}"></h3>
+            <span class="role">Administrator</span>
         </div>
 
+        <!-- Navigation -->
         <nav class="sidebar-nav">
             <ul>
-                <li><a th:href="@{/admin/dashboard}" class="active">🏠 Dashboard</a></li>
-                <li><a th:href="@{/item/dashboard}">📦 Orders</a></li>
-                <li><a th:href="@{/auction/arena}">⚔️ Arena</a></li>
-                <li> <a th:href="@{/admin/auctions}">Item Control</a></li>
                 <li>
-                    <form th:action="@{/admin/logout}" method="post" class="logout-form">
-                        <button type="submit" class="logout-btn">➡️ Logout</button>
-                    </form>
+                    <a th:href="@{/admin/dashboard}" class="active">🏠 Dashboard</a>
+                </li>
+                <li>
+                    <a th:href="@{/item/admin/dashboard}">📦 Orders</a>
+                </li>
+                <li>
+                    <a th:href="@{/auction/admin/arena}">⚔️ Arena</a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/auctions}">🛠 Item Control</a>
                 </li>
             </ul>
         </nav>
+
+        <!-- Logout -->
+        <div class="sidebar-footer">
+            <form th:action="@{/admin/logout}" method="post">
+                <button type="submit" class="logout-btn">➡️ Logout</button>
+            </form>
+        </div>
+
     </aside>
 </div>
 
-<!-- ================= NAVBAR FRAGMENT ================= -->
+<!-- ================= NAVBAR ================= -->
 <div th:fragment="navbar">
     <header class="navbar">
+        <div class="navbar-left">
+            <h2 class="navbar-title">BidIT Admin Panel</h2>
+        </div>
 
-
-        <nav class="navbar-actions">
-            <a th:href="@{/user/profile}" class="nav-profile-link">👤 Profile</a>
-        </nav>
+        <div class="navbar-right">
+            <a th:href="@{/admin/profile}" class="nav-profile">
+                👤 Profile
+            </a>
+        </div>
     </header>
 </div>
 

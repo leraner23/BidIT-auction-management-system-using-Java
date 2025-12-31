@@ -9,7 +9,11 @@
     margin-bottom: 25px;
     color: #222;
 }
-
+.disabled-btn {
+    pointer-events: none; /* makes link unclickable */
+    opacity: 0.5;         /* grayed out */
+    cursor: not-allowed;
+}
 .auction-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
