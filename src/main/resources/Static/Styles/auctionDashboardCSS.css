@@ -1,47 +1,63 @@
-.auction-container {
-    padding: 30px;
-    margin-left: 260px; /* aligns with sidebar */
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
+/* ================= AUCTION CONTAINER ================= */
+.auction-container {
+    margin-left: 260px; /* aligns with sidebar */
+    margin-top: 60px;   /* aligns with navbar */
+    padding: 30px;
+    min-height: calc(100vh - 60px);
+    background-color: #f8f9fa;
+}
+
+/* ================= TITLE ================= */
 .auction-title {
-    font-size: 26px;
-    font-weight: 600;
-    margin-bottom: 25px;
-    color: #222;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
 }
-.disabled-btn {
-    pointer-events: none; /* makes link unclickable */
-    opacity: 0.5;         /* grayed out */
-    cursor: not-allowed;
-}
+
+/* ================= GRID ================= */
 .auction-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
 }
 
-/* CARD */
+/* ================= CARD ================= */
 .auction-card {
-    background: #ffffff;
-    border-radius: 14px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     overflow: hidden;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .auction-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
-/* IMAGE */
+/* ================= IMAGE ================= */
 .image-wrapper {
     position: relative;
-    height: 180px;
+    width: 100%;
+    padding-top: 70%; /* ratio 7:10 */
     overflow: hidden;
 }
 
 .image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -49,68 +65,84 @@
 
 .rate-badge {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    background: #ff9800;
-    color: #fff;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
+    top: 10px;
+    left: 10px;
+    background-color: #4a67ff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
     font-weight: 600;
+    font-size: 0.9em;
 }
 
-/* BODY */
+/* ================= CARD BODY ================= */
 .card-body {
-    padding: 18px;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.item-category {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #333;
-}
-
-.item-desc {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 14px;
-    line-height: 1.4;
-}
-
-/* PRICE */
+/* Price Rows */
 .price-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
+    font-size: 0.95em;
+    color: #333;
 }
 
 .base-label {
-    font-size: 13px;
-    color: #777;
+    font-weight: 600;
 }
 
 .base-price {
-    font-size: 17px;
-    font-weight: 700;
-    color: #2e7d32;
+    font-weight: 500;
+    color: #4a67ff;
 }
 
-/* BUTTON */
+/* ================= BIDWAR BUTTON ================= */
 .bidwar-btn {
-    display: block;
+    margin-top: 10px;
+    padding: 8px 15px;
     text-align: center;
-    padding: 10px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #ff5722, #ff9800);
-    color: #fff;
+    background-color: #f97316;
+    color: white;
     font-weight: 600;
+    border-radius: 6px;
     text-decoration: none;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition: 0.3s;
 }
 
 .bidwar-btn:hover {
-    background: linear-gradient(135deg, #e64a19, #fb8c00);
-    transform: scale(1.03);
+    background-color: #ea580c;
+}
+
+/* Disabled Admin Button */
+.disabled-btn {
+    background-color: #9ca3af !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .auction-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    .auction-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auction-grid {
+        grid-template-columns: 1fr;
+    }
+    .card-body {
+        padding: 10px 12px;
+    }
+    .price-row {
+        flex-direction: column;
+        gap: 5px;
+    }
 }

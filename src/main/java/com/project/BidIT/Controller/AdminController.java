@@ -2,8 +2,8 @@ package com.project.BidIT.Controller;
 
 import com.project.BidIT.Compontents.JwtUtil;
 import com.project.BidIT.DTO.AdminDto;
-import com.project.BidIT.Repo.AdminRepo;
-import com.project.BidIT.Repo.ItemRepository;
+import com.project.BidIT.DTO.AdminUserDto;
+import com.project.BidIT.Repo.*;
 import com.project.BidIT.Service.Admin.AdminService;
 import com.project.BidIT.Service.Item.ItemService;
 import com.project.BidIT.entity.Admin;
@@ -21,7 +21,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,8 +55,14 @@ public class AdminController {
     @Autowired
     private AdminRepo adminRepo;
 
+    @Autowired
+    private CategoryRepo categoryRepo;
 
+@Autowired
+private UserRepository userRepository;
 
+@Autowired
+private BudgetRepo budgetRepo;
     // Show registration form
     @GetMapping("/register")
     public String userRegister(Model model){
@@ -185,6 +193,15 @@ public class AdminController {
         Admin loggedAdmin = (Admin) authentication.getPrincipal(); // cast to Admin
         model.addAttribute("admin", loggedAdmin);
 
+        long totalUsers = userRepository.count();
+        long totalItems = itemRepository.count();
+        long totalCategories = categoryRepo.count();
+        double totalBudget = budgetRepo.getTotalBudget();
+
+        model.addAttribute("totalUsers", totalUsers);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("totalCategories", totalCategories);
+        model.addAttribute("totalBudget", totalBudget);
         return "Admin/AdminDashboard";
     }
 
@@ -248,4 +265,100 @@ public class AdminController {
         return "Admin/AdminProfile";
     }
 
+    @GetMapping("/users")
+    public String adminUsers(Model model, Authentication authentication) {
+
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+
+        Admin admin = (Admin) authentication.getPrincipal();
+
+        model.addAttribute("admin", admin);
+        model.addAttribute("usersList", userRepository.findAll());
+
+        return "Admin/UserTable";
+    }
+
+    @GetMapping("/users/delete/{id}")
+    public String deleteAdminUser(Authentication authentication, Model model, @PathVariable Long id){
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+
+        Admin admin = (Admin) authentication.getPrincipal();
+        model.addAttribute("admin", admin);
+        userRepository.deleteById(id);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/users/add")
+    public String addUser(Model model, Authentication authentication){
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+
+        Admin admin = (Admin) authentication.getPrincipal();
+        model.addAttribute("admin", admin);
+        model.addAttribute("userDto", new AdminUserDto());
+        return "Admin/UserRegister";
+    }
+
+    @PostMapping("/user/register")
+    public String registerAdminuser(   @ModelAttribute("userDto") AdminUserDto dto,
+                                       Authentication authentication,
+                                       RedirectAttributes redirectAttributes) throws IOException {
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+
+        // Validate passwords
+        if (!dto.getPassword().equals(dto.getCpassword())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Passwords do not match");
+            return "redirect:/admin/users/add";
+        }
+        String email = dto.getEmail();
+        if(userRepository.existsByEmail(email)){
+            redirectAttributes.addFlashAttribute("errorMessage", "Email already exists");
+            return "redirect:/admin/users/add";
+        }
+String UserName = dto.getUsername();
+        if(userRepository.existsByUsername(UserName)){
+            redirectAttributes.addFlashAttribute("errorMessage", "username already taken");
+            return "redirect:/admin/users/add";
+        }
+
+        String Phone = dto.getPhone();
+        if(userRepository.existsByPhone(Phone)){
+            redirectAttributes.addFlashAttribute("errorMessage", "phone number  already registered");
+            return "redirect:/admin/users/add";
+        }
+        // Save image
+        MultipartFile file = dto.getUserImage();
+        String imageName = file.getOriginalFilename();
+
+        Path imagePath = Paths.get(uploadDir, imageName);
+        Files.createDirectories(imagePath.getParent());
+        Files.write(imagePath, file.getBytes());
+
+        // Convert DTO → Entity
+        User user = new User();
+        user.setFullName(dto.getFullName());
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPhone(dto.getPhone());
+        user.setUserAge(dto.getUserAge());
+        user.setGender(dto.getGender());
+        user.setPAddress(dto.getPAddress());
+        user.setUserImage(imageName);
+
+        // 🔐 Always encode password
+        user.setPassword(dto.getPassword());
+        user.setCpassword(dto.getCpassword());
+
+        userRepository.save(user);
+
+        return "redirect:/admin/users";
+
+    }
 }

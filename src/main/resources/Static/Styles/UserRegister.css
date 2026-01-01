@@ -14,7 +14,15 @@ body {
     align-items: center;
     min-height: 100vh;
 }
-
+.global-error {
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
 /* Container */
 .container {
     width: 100%;

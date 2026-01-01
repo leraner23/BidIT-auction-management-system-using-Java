@@ -32,6 +32,7 @@ public class ItemMapping {
         item.setAuctionDurationMinutes(dto.getAuctionDurationMinutes());
         item.setAuctionStartTime(dto.getAuctionStartTime());
         item.setItemName(dto.getItemName());
+        item.setAdmin(dto.getAdmin());
         return item;
     }
 
@@ -50,7 +51,7 @@ public class ItemMapping {
         dto.setAuctionDurationMinutes(item.getAuctionDurationMinutes());
         dto.setAuctionStartTime(item.getAuctionStartTime());
         dto.setItemName(item.getItemName());
-
+        dto.setAdmin(item.getAdmin());
         return dto;
     }
 }

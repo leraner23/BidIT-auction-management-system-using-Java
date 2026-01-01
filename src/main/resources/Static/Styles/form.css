@@ -1,104 +1,224 @@
-/* ===== form.css ===== */
-
-/* Reset and base styles */
+/* ================= RESET ================= */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
+/* ================= BODY ================= */
 body {
-    background-color: #f5f6fa;
+    background-color: #f4f6ff; /* page background */
     color: #333;
-    padding-top: 80px; /* leave space for navbar */
-    padding-left: 260px; /* leave space for sidebar */
-    transition: padding-left 0.3s ease;
 }
 
-h2 {
-    font-size: 28px;
-    margin-bottom: 30px;
-    color: #2f3640;
+/* ================= SIDEBAR ================= */
+.sidebar {
+    width: 260px; /* fixed width like admin */
+    height: 100vh;
+    background-color: #1e1e2f;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
 }
 
-/* Form container */
-form {
-    background-color: #fff;
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    max-width: 700px;
-    margin: 0 auto 50px auto;
+/* ================= PROFILE SUMMARY ================= */
+.user-profile-summary {
+    text-align: center;
+    padding: 25px 15px;
+    border-bottom: 1px solid #2e2e42;
 }
 
-/* Form labels */
-form label {
+.user-profile-summary .profile-image {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4f46e5;
+    margin-bottom: 10px;
+}
+
+.user-profile-summary h3 {
+    font-size: 18px;
+    color: #fff;
+}
+
+/* ================= NAVIGATION ================= */
+.sidebar-nav {
+    flex-grow: 1; /* allow nav to push footer down */
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 15px 0;
+}
+
+.sidebar-nav ul li {
+    margin: 1px 0;
+}
+
+.sidebar-nav ul li a {
     display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #2f3640;
+    padding: 12px 25px;
+    color: #ddd;
+    text-decoration: none;
+    transition: all 0.3s;
 }
 
-/* Input fields */
-form input[type="text"],
-form input[type="number"],
-form input[type="file"],
-form select,
-form textarea {
+.sidebar-nav ul li a:hover,
+.sidebar-nav ul li a.active {
+    background-color: #4f46e5;
+    color: #fff;
+}
+
+/* ================= SIDEBAR FOOTER ================= */
+.sidebar-footer {
+    margin-top: auto; /* push to bottom */
+    padding: 20px;
+    border-top: 1px solid #2e2e42;
+}
+
+.sidebar-footer .logout-btn {
     width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    border: none;
+    background-color: #dc2626;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.sidebar-footer .logout-btn:hover {
+    background-color: #b91c1c;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 260px; /* same as sidebar */
+    width: calc(100% - 260px);
+    height: 60px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 30px;
+    z-index: 1001;
+}
+
+.nav-profile-link {
+    text-decoration: none;
+    color: #4f46e5;
+    font-weight: 500;
+    padding: 6px 12px;
     border-radius: 6px;
-    font-size: 14px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: background 0.3s, color 0.3s;
 }
 
-form input[readonly] {
-    background-color: #e9ecef;
-    cursor: not-allowed;
+.nav-profile-link:hover {
+    background: #eef2ff;
+    color: #4338ca;
 }
 
-/* Focus effects */
-form input:focus,
-form select:focus,
-form textarea:focus {
-    border-color: #4b7bec;
-    box-shadow: 0 0 5px rgba(75, 123, 236, 0.5);
+/* ================= MAIN CONTENT ================= */
+.main-content {
+    margin-left: 260px; /* leave space for sidebar */
+    margin-top: 60px;   /* leave space for navbar */
+    padding: 30px;
+    min-height: calc(100vh - 60px);
+}
+
+/* ================= ADD ITEM FORM ================= */
+/* scoped specifically to prevent affecting sidebar/footer */
+form.add-item-form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+form.add-item-form h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+    color: #4f46e5; /* matches sidebar hover */
+}
+
+form.add-item-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+form.add-item-form input[type="text"],
+form.add-item-form input[type="number"],
+form.add-item-form input[type="file"],
+form.add-item-form select,
+form.add-item-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
     outline: none;
+    transition: all 0.2s;
 }
 
-/* Textarea */
-form textarea {
+form.add-item-form input:focus,
+form.add-item-form select:focus,
+form.add-item-form textarea:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 4px rgba(79, 70, 229, 0.3);
+}
+
+form.add-item-form textarea {
     resize: vertical;
 }
 
-/* Button */
-form button[type="submit"] {
-    background-color: #4b7bec;
+form.add-item-form button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #4f46e5;
     color: #fff;
-    padding: 12px 25px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: all 0.2s;
 }
 
-form button[type="submit"]:hover {
-    background-color: #3867d6;
-    transform: translateY(-2px);
+form.add-item-form button[type="submit"]:hover {
+    background-color: #3730a3;
 }
 
-/* Responsive for mobile */
-@media (max-width: 768px) {
-    body {
-        padding-left: 0;
-        padding-top: 70px;
+/* ================= RESPONSIVE ================= */
+@media screen and (max-width: 768px) {
+    .navbar {
+        left: 0;
+        width: 100%;
     }
-    form {
-        margin: 20px;
+
+    .main-content {
+        margin-left: 0;
+        margin-top: 70px;
+        padding: 20px;
+    }
+
+    form.add-item-form {
+        margin: 100px 20px 20px;
         padding: 20px;
     }
 }

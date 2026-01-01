@@ -34,7 +34,7 @@
                 <span><strong>Category:</strong> <span th:text="${item.category.name}"></span></span>
                 <span><strong>Rate:</strong> <span th:text="${item.rate}"></span></span>
                 <span><strong>Base Amount:</strong> Rs. <span th:text="${item.amount}"></span></span>
-                <span><strong>Placed By:</strong> <span th:text="${item.user.username}"></span></span>
+                <span><strong>Placed By:</strong><span th:text="${item.user != null ? item.user.username : (item.admin != null ? item.admin.username : 'N/A')}"></span></span>
             </div>
 
             <!-- TIMER -->

@@ -26,6 +26,7 @@ public class BidService {
     private BidDetailsRepo bidDetailsRepo;
     @Autowired
     private BudgetRepo budgetRepository;
+
     // Place a new bid
     public Bid placeBid(User user, Item item, double amount) {
 
@@ -139,4 +140,5 @@ public class BidService {
 
         itemRepository.save(item);
     }
+
 }

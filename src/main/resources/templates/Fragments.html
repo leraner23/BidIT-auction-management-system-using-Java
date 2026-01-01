@@ -21,14 +21,13 @@
                 <li><a th:href="@{/bid/dashboard}">💰 Bids</a></li>
                 <li><a th:href="@{/budget/dashboard}">💳 Budget</a></li>
                 <li><a th:href="@{/auction/arena}">⚔️ Arena</a></li>
-
-                <li>
-                    <form th:action="@{/user/logout}" method="post" class="logout-form">
-                        <button type="submit" class="logout-btn">➡️ Logout</button>
-                    </form>
-                </li>
             </ul>
         </nav>
+        <div class="sidebar-footer">
+            <form th:action="@{/user/logout}" method="post">
+                <button type="submit" class="logout-btn">➡️ Logout</button>
+            </form>
+        </div>
     </aside>
 </div>
 

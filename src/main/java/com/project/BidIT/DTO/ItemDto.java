@@ -1,9 +1,6 @@
 package com.project.BidIT.DTO;
 
-import com.project.BidIT.entity.Bid;
-import com.project.BidIT.entity.BidDetails;
-import com.project.BidIT.entity.Category;
-import com.project.BidIT.entity.User;
+import com.project.BidIT.entity.*;
 import com.project.BidIT.enums.Rate;
 import com.project.BidIT.enums.Status;
 import jakarta.persistence.*;
@@ -18,7 +15,7 @@ public class ItemDto {
     private Long itemId;
 
     private User user;
-
+    private Admin admin;
     private String itemName;
     private Long categoryId;
 
@@ -141,5 +138,13 @@ public class ItemDto {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 }

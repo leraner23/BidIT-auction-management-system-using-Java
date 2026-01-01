@@ -19,6 +19,10 @@ public class Item {
     private String itemName;
 
     @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
+
+    @ManyToOne
     @JoinColumn(name = "Category", referencedColumnName = "categoryId")
     private Category category;
 
@@ -143,5 +147,13 @@ public class Item {
 
     public void setAuctionDurationMinutes(int auctionDurationMinutes) {
         this.auctionDurationMinutes = auctionDurationMinutes;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 }

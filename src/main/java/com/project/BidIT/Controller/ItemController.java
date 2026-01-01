@@ -313,7 +313,51 @@ return "ItemADDForm";
         categoryRepo.save(category);
          return "redirect:/item/admin/dashboard";
 
+    }
 
+    @PostMapping("/admin/save")
+    public String addAdminItem(ItemDto dto,Authentication authentication) throws IOException {
+
+        System.out.println("Authentication: " + authentication);
+
+        if (authentication == null) {
+            return "redirect:/admin/login";
+        }
+
+        Admin loggedAdmin = (Admin) authentication.getPrincipal(); // cast to Admin
+        Category category = categoryRepo.findById(dto.getCategoryId()).orElse(null);
+        if (category == null) return "redirect:/item/admin/add"; // invalid category
+        // Set the user explicitly in the DTO
+
+
+        MultipartFile file = dto.getItemImage();
+        String imageName = file.getOriginalFilename();
+
+        // Create directory if not exists
+        Path imagePath = Paths.get(uploadDir, imageName);
+        if (!Files.exists(imagePath.getParent())) {
+            Files.createDirectories(imagePath.getParent());
+        }
+
+        // Save file
+        Files.write(imagePath, file.getBytes());
+
+        // Convert DTO → Entity
+        Item item = new Item();
+        item.setAdmin(loggedAdmin);
+        item.setCategory(category);
+
+        item.setRate(dto.getRate());
+        item.setDescription(dto.getDescription());
+        item.setAmount(dto.getAmount());
+        item.setStatus(Status.PENDING);
+        item.setAuctionStartTime(null);
+        item.setAuctionDurationMinutes(0);
+        item.setItemImage(imageName);
+        item.setItemName(dto.getItemName());
+        itemRepository.save(item);
+
+        return "redirect:/item/admin/dashboard";
     }
 
 }

@@ -1,123 +1,124 @@
-/* -----------------------------------
-   GLOBAL LAYOUT FIX (important)
------------------------------------ */
-:root {
-    --primary-color: #007bff;
-    --sidebar-width: 250px;
-    --navbar-height: 70px;
-    --background-color: #f8f9fa;
-    --text-color: #343a40;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-
-    /* Align with fragments */
-    padding-left: var(--sidebar-width);
-    padding-top: var(--navbar-height);
-}
-
-/* Remove default header (you are using navbar fragment) */
-header h1 {
-    display: none;
-}
-
-/* -----------------------------------
-   MAIN CONTENT AREA
------------------------------------ */
+/* ================= ITEM DASHBOARD LAYOUT ================= */
 .main-content {
-    padding: 20px 30px;
+    margin-left: 260px; /* align with sidebar */
+    margin-top: 60px;   /* align with navbar */
+    padding: 30px;
+    background-color: #f8f9fa; /* light background for dashboard */
+    min-height: calc(100vh - 60px);
 }
 
-/* -----------------------------------
-   ACTION BUTTONS
------------------------------------ */
+/* ================= ACTION BUTTONS ================= */
 .actions {
-    margin-bottom: 20px;
     display: flex;
     gap: 15px;
+    margin-bottom: 25px;
 }
 
 .actions button {
-    background-color: var(--primary-color);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.actions button a {
+    background-color: #4a67ff;
     color: white;
-    text-decoration: none;
-    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
 .actions button:hover {
-    opacity: 0.85;
+    background-color: #3352ff;
 }
 
-/* -----------------------------------
-   CATEGORY LIST
------------------------------------ */
+.actions button a {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+/* ================= CATEGORY LIST ================= */
 .category-list {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .category-list h2 {
-    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .category-list ul {
     list-style: none;
-    padding: 0;
+    padding-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .category-list li {
-    background-color: #e9ecef;
-    padding: 8px 10px;
-    margin-bottom: 5px;
-    border-radius: 5px;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
 }
 
-/* -----------------------------------
-   ITEMS TABLE
------------------------------------ */
-.items-table {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+/* ================= ITEMS TABLE ================= */
+.items-table h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
 }
 
 .items-table table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .items-table th, .items-table td {
-    border-bottom: 1px solid #ddd;
-    padding: 12px 10px;
-    text-align: left;
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
 }
 
 .items-table th {
-    background-color: #f1f1f1;
-    font-weight: bold;
+    background-color: #4a67ff;
+    color: white;
 }
 
 .items-table tr:hover {
-    background-color: #f8f9fa;
+    background-color: #f1f5f9;
 }
 
 .items-table img {
-    border-radius: 5px;
-    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* ================= ITEM ACTIONS ================= */
+.items-table a {
+    text-decoration: none;
+    color: #4a67ff;
+    margin: 0 5px;
+    font-weight: 500;
+}
+
+.items-table a:hover {
+    text-decoration: underline;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+    .main-content {
+        padding: 15px;
+    }
+    .actions {
+        flex-direction: column;
+    }
+    .items-table th, .items-table td {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
 }

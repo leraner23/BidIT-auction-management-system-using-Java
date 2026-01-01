@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/Styles/AdminfragmentCSS.css}">
+    <link rel="stylesheet" th:href="@{/Styles/AdminDashboard.css}">
 </head>
 
 <body>
@@ -13,5 +14,44 @@
 
 <div th:replace="Admin/AdminFragment  :: sidebar(${admin})"></div>
 <div th:replace="Admin/AdminFragment  :: navbar"></div>
+
+<div class="main-content">
+    <h1>Dashboard</h1>
+    <div class="dashboard-cards">
+
+        <div class="card">
+            <div class="card-icon">👥</div>
+            <div class="card-info">
+                <h2 th:text="${totalUsers}">0</h2>
+                <p>Total Users</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">📦</div>
+            <div class="card-info">
+                <h2 th:text="${totalItems}">0</h2>
+                <p>Total Items</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">📂</div>
+            <div class="card-info">
+                <h2 th:text="${totalCategories}">0</h2>
+                <p>Total Categories</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">💰</div>
+            <div class="card-info">
+                <h2 th:text="${#numbers.formatDecimal(totalBudget, 0, 'COMMA', 2, 'POINT')}">0</h2>
+                <p>Total Budget</p>
+            </div>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

@@ -1,0 +1,98 @@
+/* ================= USER ADMIN DASHBOARD ================= */
+.user-dashboard {
+    margin-left: 260px; /* same as sidebar */
+    margin-top: 60px;  /* same as navbar */
+    padding: 30px;
+    font-family: 'Segoe UI', sans-serif;
+    color: #1f2937;
+    min-height: calc(100vh - 60px); /* full height minus navbar */
+    background-color: #f9fafb;
+}
+
+/* ================= ACTIONS ================= */
+.user-dashboard .actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.user-dashboard .actions .btn-add {
+    display: inline-block;
+    background-color: #4f46e5; /* matches sidebar hover */
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.user-dashboard .actions .btn-add:hover {
+    background-color: #4338ca;
+    color: #fff;
+}
+
+/* ================= TABLE ================= */
+.user-dashboard table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.user-dashboard table thead {
+    background-color: #4f46e5;
+    color: #fff;
+}
+
+.user-dashboard table thead th {
+    text-align: left;
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.user-dashboard table tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+}
+
+.user-dashboard table tbody tr:nth-child(even) {
+    background-color: #f3f4f6;
+}
+
+/* ================= DELETE BUTTON ================= */
+.user-dashboard .btn-delete {
+    display: inline-block;
+    background-color: #dc2626;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.user-dashboard .btn-delete:hover {
+    background-color: #b91c1c;
+    color: #fff;
+}
+
+/* ================= RESPONSIVE ================= */
+@media screen and (max-width: 1024px) {
+    .user-dashboard {
+        margin-left: 0;
+        margin-top: 60px;
+        padding: 20px;
+    }
+
+    .navbar {
+        width: 100%;
+        left: 0;
+    }
+}

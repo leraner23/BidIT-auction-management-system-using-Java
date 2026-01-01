@@ -12,7 +12,8 @@ import java.util.Optional;
 @Repository
 public interface BudgetRepo extends JpaRepository<Budget, Long> {
 
-
+    @Query("SELECT COALESCE(SUM(b.total), 0) FROM Budget b")
+    double getTotalBudget();
 
 
     List<Budget> findByUser_UserId(Long userId);

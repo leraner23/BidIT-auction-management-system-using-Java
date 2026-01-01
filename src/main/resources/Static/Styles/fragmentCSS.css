@@ -1,159 +1,171 @@
-/* ================= ROOT VARIABLES ================= */
-:root {
-    --primary-color: #007bff;
-    --sidebar-width: 250px;
-    --navbar-height: 70px;
-    --background-color: #f8f9fa;
-    --text-color: #343a40;
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* ================= GLOBAL BODY LAYOUT ================= */
-body {
-    padding-left: var(--sidebar-width) !important;
-    padding-top: var(--navbar-height) !important;
-    margin: 0 !important;
-    font-family: Arial, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-}
-
-/* ================= SIDEBAR STYLING ================= */
+/* ================= SIDEBAR ================= */
 .sidebar {
-    width: var(--sidebar-width);
+    width: 260px; /* same as admin */
+    height: 100vh;
+    background-color: #1e1e2f; /* dark sidebar */
+    color: #fff;
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
-    background-color: #343a40;
-    color: #ffffff;
-    padding: 20px 0;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    z-index: 1002;
+    z-index: 1000;
 }
 
-/* Profile Section */
+/* ================= PROFILE ================= */
 .user-profile-summary {
     text-align: center;
-    padding: 0 20px 20px;
-    border-bottom: 1px solid #495057;
-    margin-bottom: 10px;
+    padding: 25px 15px;
+    border-bottom: 1px solid #2e2e42;
 }
+
 .user-profile-summary .profile-image {
-    width: 80px !important;
-    height: 80px !important;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     object-fit: cover;
+    border: 3px solid #4f46e5; /* primary accent color */
     margin-bottom: 10px;
-    border: 3px solid var(--primary-color);
-}
-.user-profile-summary h3 {
-    font-size: 1.1em;
-    margin: 0;
-    color: #f8f9fa;
 }
 
-/* Sidebar Navigation */
+.user-profile-summary h3 {
+    font-size: 18px;
+    color: #fff;
+}
+
+/* ================= NAVIGATION ================= */
+.sidebar-nav {
+    flex-grow: 1; /* allow nav to grow and push footer down */
+}
+
 .sidebar-nav ul {
     list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.sidebar-nav a {
-    display: block;
-    padding: 12px 20px;
-    text-decoration: none;
-    color: #adb5bd;
-    font-size: 1em;
-    transition: background-color 0.3s;
-}
-.sidebar-nav a:hover {
-    background-color: #495057;
-    color: white;
-}
-.sidebar-nav a.active {
-    background-color: var(--primary-color);
-    color: white;
-    font-weight: bold;
-    border-left: 5px solid #ffffff;
-    padding-left: 15px;
+    padding: 15px 0;
 }
 
-/* Logout Button */
-.logout-form {
-    padding: 10px 20px;
-    margin-top: auto;
+.sidebar-nav ul li {
+    margin: 1px 0;
 }
+
+.sidebar-nav ul li a {
+    display: block;
+    padding: 12px 25px;
+    color: #ddd;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar-nav ul li a:hover,
+.sidebar-nav ul li a.active {
+    background-color: #4f46e5;
+    color: #fff;
+}
+
+/* ================= SIDEBAR FOOTER ================= */
+.sidebar-footer {
+    margin-top: auto;
+    padding: 20px;
+    border-top: 1px solid #2e2e42;
+}
+
 .logout-btn {
     width: 100%;
     padding: 10px;
-    background-color: #dc3545;
-    color: white;
     border: none;
-    border-radius: 4px;
+    background-color: #dc2626;
+    color: #fff;
     cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s;
-}
-.logout-btn:hover {
-    background-color: #b92a36;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: 0.2s;
 }
 
-/* ================= NAVBAR STYLING ================= */
+.logout-btn:hover {
+    background-color: #b91c1c;
+}
+
+/* ================= NAVBAR ================= */
 .navbar {
     position: fixed;
     top: 0;
-    left: var(--sidebar-width);
-    right: 0;
-    height: var(--navbar-height);
+    left: 260px; /* same as sidebar */
+    width: calc(100% - 260px);
+    height: 60px; /* fixed height */
     background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e5e7eb;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 30px;
     z-index: 1001;
 }
 
-/* Search Bar */
-.search-bar {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    max-width: 400px;
-    margin-right: 20px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    overflow: hidden;
-}
-.search-input {
-    border: none;
-    padding: 10px 15px;
-    flex-grow: 1;
-    outline: none;
-}
-.search-btn {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 0.9em;
+/* Navbar Profile Link */
+.nav-profile-link {
+    text-decoration: none;
+    color: #4f46e5;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background 0.3s, color 0.3s;
 }
 
-/* Navbar Right Icons */
-.navbar-actions {
-    display: flex;
-    align-items: center;
+.nav-profile-link:hover {
+    background: #eef2ff;
+    color: #4338ca;
 }
-.navbar-actions a {
-    text-decoration: none;
-    color: var(--text-color);
-    margin-left: 15px;
+
+/* ================= MAIN CONTENT ================= */
+.main-content {
+    margin-left: 260px; /* same as sidebar */
+    margin-top: 60px;   /* same as navbar */
+    padding: 30px;
+    min-height: calc(100vh - 60px);
+    background-color: #f4f6ff; /* content background */
+}
+
+/* ================= FORMS ================= */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="file"],
+form select,
+form textarea {
+    width: 100%;
     padding: 8px 10px;
-    transition: background-color 0.3s;
-    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
-.navbar-actions a:hover {
-    background-color: #e9ecef;
+
+form textarea {
+    resize: vertical;
+}
+
+form button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+form button[type="submit"]:hover {
+    background-color: #4338ca;
 }

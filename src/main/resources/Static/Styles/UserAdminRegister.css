@@ -1,0 +1,132 @@
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ================= CONTAINER ================= */
+.container {
+    margin-left: 260px; /* align with sidebar */
+    margin-top: 80px;   /* below navbar */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+/* ================= CARD ================= */
+.card {
+    background-color: #ffffff;
+    width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    padding: 30px 25px;
+}
+
+.card h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #1f2937;
+}
+
+/* ================= FORM FIELDS ================= */
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.field label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="number"],
+.field input[type="password"],
+.field textarea,
+.field select,
+.field input[type="file"] {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    outline: none;
+    border-color: #4f46e5;
+}
+
+/* ================= ERROR MESSAGES ================= */
+.error {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.global-error {
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* ================= BUTTON ================= */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #4f46e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background-color: #4338ca;
+}
+
+/* ================= LOGIN LINK ================= */
+.login-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #4f46e5;
+}
+
+.login-link a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #4f46e5;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 600px) {
+    .card {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .container {
+        margin-left: 0;
+        margin-top: 70px;
+    }
+}

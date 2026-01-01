@@ -6,7 +6,7 @@
     <title>User Dashboard - BidIT</title>
     <link rel="stylesheet" th:href="@{/Styles/userdashboard-style.css}">
     <link rel="stylesheet" th:href="@{/Styles/fragmentCSS.css}">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div th:replace="Fragments  :: sidebar(${users})"></div>
@@ -16,8 +16,71 @@
         <h2>Dashboard Overview</h2>
 
 
+      <div class="summary-cards">
+          <div class="card">
+              <h3>Total Bids Placed</h3>
+              <p th:text="${totalBids}"></p>
+          </div>
+          <div class="card">
+              <h3>Total Auctions Won</h3>
+              <p th:text="${auctionsWon}"></p>
+          </div>
+          <div class="card">
+              <h3>Total Auctions Lost</h3>
+              <p th:text="${auctionsLost}"></p>
+          </div>
+      </div>
 
+      <!-- ================= BID ACTIVITY CHART ================= -->
+      <div class="chart-container">
+          <canvas id="bidChart"></canvas>
+      </div>
   </main>
+</div>
+
+<script>
+    const ctx = document.getElementById('bidChart').getContext('2d');
+    const bidChart = new Chart(ctx, {
+        type: 'bar', // you can also use 'line'
+        data: {
+            labels: ['Bids Placed', 'Auctions Won', 'Auctions Lost'],
+            datasets: [{
+                label: 'Your Activity',
+                data: [
+                    /* Thymeleaf variables */
+                    [[${totalBids}]],
+                    [[${auctionsWon}]],
+                    [[${auctionsLost}]]
+                ],
+                backgroundColor: [
+                    '#4f46e5',
+                    '#16a34a',
+                    '#dc2626'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Bid Activity Overview'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+</script>
 
 
 </div>

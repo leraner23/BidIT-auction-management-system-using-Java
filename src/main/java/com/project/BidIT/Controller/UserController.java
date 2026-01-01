@@ -2,7 +2,10 @@ package com.project.BidIT.Controller;
 
 import com.project.BidIT.Compontents.JwtUtil;
 import com.project.BidIT.DTO.UserDto;
+import com.project.BidIT.Repo.BidRepo;
 import com.project.BidIT.Repo.CategoryRepo;
+import com.project.BidIT.Repo.ItemRepository;
+import com.project.BidIT.Repo.UserRepository;
 import com.project.BidIT.Service.User.UserService;
 import com.project.BidIT.entity.User;
 import jakarta.servlet.http.Cookie;
@@ -15,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,7 +39,15 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private UserService userService;
+
+    @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
+    private BidRepo bidRepo;
     // Show registration form
     @GetMapping("/register")
     public String userRegister(Model model){
@@ -46,18 +58,27 @@ public class UserController {
     //Handles the registration form
     @PostMapping("/register")
     public String userRegister(@Valid @ModelAttribute("users") UserDto dto, BindingResult bindingResult,
-                               Model model){
+                               Model model, RedirectAttributes redirectAttributes){
         System.out.println("Form submitted: " + dto.getEmail());
 
         if(!dto.getPassword().equals(dto.getCpassword())){
             bindingResult.rejectValue("Cpassword", "error.user", "Passwords do not match");
         }
 
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(err -> System.out.println("Validation error: " + err));
-            return "User/UserRegisterForm";
+        if(userRepository.existsByUsername(dto.getUsername())) {
+            model.addAttribute("errorMessage", "Username already taken");
+        } else if(  userRepository.existsByEmail(dto.getEmail())) {
+
+            model.addAttribute("errorMessage", "Email already exists");
+        } else if(userRepository.existsByPhone(dto.getPhone())) {
+            model.addAttribute("errorMessage", "Phone number already registered");
         }
 
+        // If there are errors
+        if(bindingResult.hasErrors() || model.containsAttribute("errorMessage")) {
+            model.addAttribute("users", dto); // important to retain field values
+            return "User/UserRegisterForm";
+        }
         User user = new User();
         user.setFullName(dto.getFullName());
         user.setUsername(dto.getUsername());
@@ -151,6 +172,16 @@ public class UserController {
         User loggedUser = userService.findByEmail(email);// fetch the logged user email
         model.addAttribute("users",loggedUser);
         model.addAttribute("amount","budget");
+        int totalBids = bidRepo.countByUser(loggedUser); // optional if you have Bid entity
+        int auctionsWon = bidRepo.totalAuctionsWon(loggedUser);
+        int auctionsParticipated = bidRepo.countParticipatedItems(loggedUser);
+        int auctionsLost = auctionsParticipated - auctionsWon;
+
+        model.addAttribute("totalBids", totalBids);
+        model.addAttribute("auctionsWon", auctionsWon);
+        model.addAttribute("auctionsLost", auctionsLost);
+
+
         return "User/UserDashboard";
     }
 

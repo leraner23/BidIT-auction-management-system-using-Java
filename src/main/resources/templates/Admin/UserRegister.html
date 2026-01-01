@@ -2,22 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <title>User Registration</title>
-
-    <link rel="stylesheet" th:href="@{/Styles/UserRegister.css}">
+    <title>User Registration By Admin</title>
+    <link rel="stylesheet" th:href="@{/Styles/AdminfragmentCSS.css}">
+    <link rel="stylesheet" th:href="@{/Styles/UserAdminRegister.css}">
 </head>
 <body>
-
+<div th:replace="Admin/AdminFragment  :: sidebar(${admin})"></div>
+<div th:replace="Admin/AdminFragment  :: navbar"></div>
 <div class="container">
+
     <div class="card">
 
         <h2>User Registration</h2>
 
-        <form th:action="@{/user/register}" th:object="${users}" method="post" enctype="multipart/form-data">
-
+        <form th:action="@{/admin/user/register}" th:object="${userDto}" method="post" enctype="multipart/form-data">
+            <!-- Global error message -->
             <div th:if="${errorMessage}" class="global-error">
                 <p th:text="${errorMessage}"></p>
             </div>
+
             <!-- Full Name -->
             <div class="field">
                 <label>Full Name</label>
@@ -96,9 +99,6 @@
 
             <button type="submit" class="btn">Register</button>
 
-            <p class="login-link">
-                Already have an account? <a th:href="@{/user/login}">Login</a>
-            </p>
 
         </form>
 
