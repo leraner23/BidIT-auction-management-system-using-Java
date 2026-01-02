@@ -14,14 +14,6 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item,Long> {
 
-        @Query("SELECT COUNT(DISTINCT b.item) FROM BidDetails b WHERE b.user = :user")
-        int countParticipatedItems(@Param("user") User user);
-
-        @Query("SELECT COUNT(b) FROM BidDetails b WHERE b.user = :user")
-        int totalBidsPlaced(@Param("user") User user);
-
-        @Query("SELECT COUNT(b) FROM BidDetails b WHERE b.user = :user AND b.item.bidDetails.user = :user")
-        int totalAuctionsWon(@Param("user") User user);
 
         // find all arenas created by a specific user (seller)
         List<Item> findByUser(User user);

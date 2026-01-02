@@ -38,30 +38,29 @@
             </thead>
 
             <tbody>
-            <tr th:each="bidD : ${bidDetails}">
-                <td th:text="${bidD.bid.bidId}"></td>
-                <td th:text="${bidD.bid.item.itemName}"></td>
-
+            <tr th:each="bid : ${userBids}" th:class="${bid.winning} ? 'winner-row' : ''">
+                <td th:text="${bid.bidId}"></td>
+                <td th:text="${bid.item?.itemName ?: 'N/A'}"></td>
                 <td>
                     <img class="item-img"
-                         th:src="@{/items/{img}(img=${bidD.bid.item.itemImage})}"
+                         th:src="@{/items/{img}(img=${bid.item?.itemImage ?: 'default.png'})}"
                          alt="Item Image">
                 </td>
+                <td th:text="${bid.user?.username ?: 'Unknown'}"></td>
+                <td th:text="${bid.item?.user?.username ?: 'Unknown'}"></td>
+                <td th:text="${bid.item?.amount ?: 0}"></td>
+                <td th:text="${bid.item?.category?.name ?: 'N/A'}"></td>
+                <td th:text="${bid.bidAmount}"></td>
+                <td class="desc" th:text="${bid.item?.description ?: ''}"></td>
+                <td th:text="${bid.bidTime}"></td>
+                <td th:text="${bid.item?.rate ?: 'N/A'}"></td>
+                <td th:text="${bid.winning} ? 'Won' : 'Lost'"></td>
 
-                <td th:text="${bidD.buyer.username}"></td>
-                <td th:text="${bidD.bid.item.user.username}"></td>
-                <td th:text="${bidD.bid.item.amount}"></td>
-                <td th:text="${bidD.bid.item.category.name}"></td>
-                <td th:text="${bidD.amount}"></td>
-                <td th:text="${bidD.review}"></td>
-                <td class="desc" th:text="${bidD.bid.item.description}"></td>
-                <td th:text="${bidD.bid.bidTime}"></td>
-                <td th:text="${bidD.bid.item.rate}"></td>
-
+                <!-- DELETE ACTION -->
                 <td>
                     <a class="delete-btn"
-                       th:href="@{/bid/delete/{id}(id=${bidD.bidDetailsId})}"
-                       onclick="return confirm('Are you sure?')">
+                       th:href="@{/bid/delete/{id}(id=${bid.winning and bid.item?.bidDetails != null ? bid.item.bidDetails.bidDetailsId : bid.bidId})}"
+                       onclick="return confirm('Are you sure you want to delete this winning bid?')">
                         Delete
                     </a>
                 </td>

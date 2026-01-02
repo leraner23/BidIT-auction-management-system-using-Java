@@ -6,6 +6,7 @@ import com.project.BidIT.Repo.BidRepo;
 import com.project.BidIT.Repo.CategoryRepo;
 import com.project.BidIT.Repo.ItemRepository;
 import com.project.BidIT.Repo.UserRepository;
+import com.project.BidIT.Service.BidService;
 import com.project.BidIT.Service.User.UserService;
 import com.project.BidIT.entity.User;
 import jakarta.servlet.http.Cookie;
@@ -48,6 +49,8 @@ public class UserController {
 
     @Autowired
     private BidRepo bidRepo;
+    @Autowired
+    private BidService bidService;
     // Show registration form
     @GetMapping("/register")
     public String userRegister(Model model){
@@ -172,16 +175,11 @@ public class UserController {
         User loggedUser = userService.findByEmail(email);// fetch the logged user email
         model.addAttribute("users",loggedUser);
         model.addAttribute("amount","budget");
-        int totalBids = bidRepo.countByUser(loggedUser); // optional if you have Bid entity
-        int auctionsWon = bidRepo.totalAuctionsWon(loggedUser);
-        int auctionsParticipated = bidRepo.countParticipatedItems(loggedUser);
-        int auctionsLost = auctionsParticipated - auctionsWon;
-
-        model.addAttribute("totalBids", totalBids);
-        model.addAttribute("auctionsWon", auctionsWon);
-        model.addAttribute("auctionsLost", auctionsLost);
-
-
+        model.addAttribute("totalBids",bidService.getAllParticipatedBids(loggedUser).size());
+        model.addAttribute("winningBids",bidService.getWinningBids(loggedUser).size());
+        model.addAttribute("wins",bidService.getTotalWins(loggedUser));
+        model.addAttribute("participated",bidService.getTotalParticipated(loggedUser));
+        model.addAttribute("auctionsLost", bidService.getTotalParticipated(loggedUser) - bidService.getTotalWins(loggedUser));
         return "User/UserDashboard";
     }
 

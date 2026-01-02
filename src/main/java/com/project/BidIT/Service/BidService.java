@@ -112,7 +112,10 @@ public class BidService {
             return;
         }
 
+
         Bid highestBid = highestBidOpt.get();
+        highestBid.setWinning(true);
+        bidRepo.save(highestBid);
         User winner = highestBid.getUser();
         double finalAmount = highestBid.getBidAmount();
         Budget winnerBudget = budgetRepository.findByUser(winner)
@@ -139,6 +142,22 @@ public class BidService {
         item.setBidDetails(bidDetails);
 
         itemRepository.save(item);
+    }
+
+    public List<Bid> getAllParticipatedBids(User user) {
+        return bidRepo.findByUser(user);
+    }
+
+    public List<Bid> getWinningBids(User user) {
+        return bidRepo.findByUserAndWinningTrue(user);
+    }
+
+    public int getTotalWins(User user) {
+        return bidRepo.countByUserAndWinningTrue(user);
+    }
+
+    public int getTotalParticipated(User user) {
+        return bidRepo.totalAuctionsParticipated(user);
     }
 
 }

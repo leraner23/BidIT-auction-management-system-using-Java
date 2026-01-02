@@ -13,20 +13,23 @@ import java.util.Optional;
 
 @Repository
 public interface BidRepo extends JpaRepository<Bid, Long> {
-    // Total bids placed by user
-    int countByUser(User user);
 
-    // Total unique auctions participated in by user
-    @Query("SELECT COUNT(DISTINCT b.item) FROM BidDetails b WHERE b.user = :user")
-    int countParticipatedItems(@Param("user") User user);
 
-    // Total auctions won by user
-    @Query("SELECT COUNT(b) FROM BidDetails b WHERE b.user = :user AND b.item.bidDetails.user = :user")
-    int totalAuctionsWon(@Param("user") User user);
 
-    // Total auctions lost by user
-    @Query("SELECT COUNT(b) FROM BidDetails b WHERE b.user = :user AND b.item.bidDetails.user != :user")
-    int totalAuctionsLost(@Param("user") User user);
+
+
+    List<Bid> findByUserAndWinningTrue(User user);      // winning bids
+
+    int countByUserAndWinningTrue(User user);           // total wins
+
+    @Query("""
+SELECT COUNT(DISTINCT b.item)
+FROM Bid b
+WHERE b.user = :user
+""")
+    int totalAuctionsParticipated(@Param("user") User user);
+
+
 
     // Get all bids by a user
     List<Bid> findByUser(User user);

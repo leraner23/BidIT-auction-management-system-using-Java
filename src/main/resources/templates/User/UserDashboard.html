@@ -19,18 +19,19 @@
       <div class="summary-cards">
           <div class="card">
               <h3>Total Bids Placed</h3>
-              <p th:text="${totalBids}"></p>
+              <p th:text="${totalBids}">0</p>
           </div>
+
           <div class="card">
               <h3>Total Auctions Won</h3>
-              <p th:text="${auctionsWon}"></p>
+              <p th:text="${wins}">0</p>
           </div>
+
           <div class="card">
               <h3>Total Auctions Lost</h3>
-              <p th:text="${auctionsLost}"></p>
+              <p th:text="${auctionsLost}">0</p>
           </div>
       </div>
-
       <!-- ================= BID ACTIVITY CHART ================= -->
       <div class="chart-container">
           <canvas id="bidChart"></canvas>
@@ -38,52 +39,43 @@
   </main>
 </div>
 
-<script>
+
+</body>
+<script th:inline="javascript">
+    const totalBids = [[${totalBids}]];
+    const auctionsWon = [[${wins}]];
+    const auctionsLost = [[${auctionsLost}]];
+
     const ctx = document.getElementById('bidChart').getContext('2d');
-    const bidChart = new Chart(ctx, {
-        type: 'bar', // you can also use 'line'
+
+    new Chart(ctx, {
+        type: 'bar',
         data: {
             labels: ['Bids Placed', 'Auctions Won', 'Auctions Lost'],
             datasets: [{
                 label: 'Your Activity',
-                data: [
-                    /* Thymeleaf variables */
-                    [[${totalBids}]],
-                    [[${auctionsWon}]],
-                    [[${auctionsLost}]]
-                ],
+                data: [totalBids, auctionsWon, auctionsLost],
                 backgroundColor: [
-                    '#4f46e5',
-                    '#16a34a',
-                    '#dc2626'
+                    '#4f46e5', // blue
+                    '#16a34a', // green
+                    '#dc2626'  // red
                 ]
             }]
         },
         options: {
             responsive: true,
             plugins: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Bid Activity Overview'
-                }
+                legend: { display: false },
+                title: { display: true, text: 'Bid Activity Overview' }
             },
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
-                    }
+                    ticks: { precision: 0 } // integer ticks
                 }
             }
         }
     });
 </script>
-
-
-</div>
-</body>
 
 </html>

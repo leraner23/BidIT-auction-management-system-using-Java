@@ -1,11 +1,157 @@
-<!DOCTYPE html >
-<html xmlns:th="http://www.thymleaf.com">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-
-    <title>BidIT</title>
-    <link rel="stylesheet" th:href="HomePageStyles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidIT | Premium Auctions</title>
+    <link rel="stylesheet" th:href="@{/Styles/HomePageStyles.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-<h1> This is landing page. </h1>
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <img th:src="@{/aaa.png}" class="vibrant-logo" alt="BidIT Logo">
+        </div>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a th:href="@{/user/login}" class="signup-btn">Sign Up</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="animate-pop">
+                The Future of <span class="highlight">Auctions</span> is Here
+            </h1>
+            <p>Experience real-time bidding with the touch of innovation.</p>
+            <a th:href="@{/user/login}" class="cta-btn">Start Bidding</a>
+        </div>
+
+        <div class="hero-image">
+            <img th:src="@{/5974451_22060.jpg}" alt="Auction Online">
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-text">
+                <h2 class="section-title">About <span class="highlight">BidIT</span></h2>
+                <p>BidIT is a modern online auction platform designed to bring excitement, transparency, and innovation to the bidding experience. We connect buyers with the best and rarest items through a secure and real-time process.</p>
+                <p>Created By: <b>Sujan Saru</b></p>
+            </div>
+            <div class="about-image">
+                <img th:src="@{/11667035_20943399.jpg}" alt="About BidIT">
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services-section">
+        <h2 class="section-title">Our Premium Services</h2>
+        <div class="services-grid">
+            <div class="service-card vibrant-blue">
+                <img th:src="@{/legal.png}" alt="Live">
+                <h3>Live Bidding</h3>
+                <p>Participate in real-time bidding to win exclusive and rare items.</p>
+            </div>
+            <div class="service-card vibrant-gold">
+                <img th:src="@{/judge.png}" alt="Auction">
+                <h3>List Items</h3>
+                <p>List your own items for auction and reach genuine bidders.</p>
+            </div>
+            <div class="service-card vibrant-purple">
+                <img th:src="@{/hammer.gif}" alt="Secure">
+                <h3>Fair Competition</h3>
+                <p>Secure and transparent bidding process for fair competition.</p>
+            </div>
+            <div class="service-card vibrant-green">
+                <div class="icon-box">📈</div>
+                <h3>Dashboard</h3>
+                <p>User-friendly dashboard to manage bids and results easily.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="contact-map">
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19212.420861348335!2d83.45415817060746!3d27.694581408808478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3996864275d9755f%3A0x2b1e92d89d4bb3ae!2sButwal!5e0!3m2!1sen!2snp!4v1767361278813!5m2!1sen!2snp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h2>Get in Touch</h2>
+                <form method="post" th:action="@{/Contacts}" th:object="${feedback}">
+                    <div class="input-group">
+                        <input type="text" th:field="*{fullName}" placeholder="Full Name" required>
+                        <input type="email" th:field="*{email}" placeholder="Email Address" required>
+                    </div>
+                    <input type="number" th:field="*{phone}" placeholder="Phone Number" required>
+                    <textarea th:field="*{message}" rows="4" placeholder="How can we help?" required></textarea>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-info">
+            <img th:src="@{/aaa.png}" alt="BidIT Logo">
+            <p>"Smart Bidding, Powered by Tech"</p>
+        </div>
+
+        <div class="footer-contact">
+            <h3>Contact Details</h3>
+            <p>📧 info@BidIT.tech</p>
+            <p>📞 9834624320</p>
+            <p>📍Butwal, Nepal</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 <span>BidIT</span>. Smart Bidding Platform.</p>
+    </div>
+</footer>
+
+
+<!-- SUCCESS POPUP -->
+<script th:if="${success}">
+    Swal.fire({
+        icon: 'success',
+        title: 'Message Sent!',
+        text: 'Thank you for contacting us. We will get back to you soon.',
+        confirmButtonColor: '#00d2ff'
+    });
+</script>
+
+<!-- SMOOTH SCROLL -->
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+
+            if (!target || targetId === "#") return;
+
+            e.preventDefault();
+
+            const navbarOffset = document.querySelector('.navbar')?.offsetHeight || 80;
+            const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - navbarOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
 </body>
 </html>

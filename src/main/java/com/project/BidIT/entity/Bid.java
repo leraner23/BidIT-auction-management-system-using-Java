@@ -18,7 +18,8 @@ public class Bid {
     @JoinColumn(name = "Bidder_id", referencedColumnName = "userId")
     private User user; // bidder
 
-
+    @Column(nullable = false)
+    private boolean winning = false;
 
     private LocalDateTime bidTime;
 
@@ -66,5 +67,11 @@ public class Bid {
         this.user = user;
     }
 
+    public boolean isWinning() {
+        return winning;
+    }
 
+    public void setWinning(boolean winning) {
+        this.winning = winning;
+    }
 }

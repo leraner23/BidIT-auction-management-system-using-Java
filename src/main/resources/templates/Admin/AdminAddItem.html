@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Item</title>
-    <link rel="stylesheet" th:href="@{/Styles/form.css}">
+    <link rel="stylesheet" th:href="@{/Styles/formItemAdmin.css}">
     <link th:if="${admin != null}" rel="stylesheet" th:href="@{/Styles/AdminfragmentCSS.css}">
 </head>
 <body>
@@ -14,7 +14,7 @@
 
 <h2>Add New Item</h2>
 
-<form th:action="@{/item/admin/save}" th:object="${itemDto}" method="post" enctype="multipart/form-data">
+<form th:action="@{/item/admin/save}" th:object="${itemDto}" method="post" enctype="multipart/form-data" class="add-item-form">
 
     <!-- User -->
     <label>User:</label>

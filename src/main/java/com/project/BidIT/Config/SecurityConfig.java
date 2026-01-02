@@ -63,7 +63,8 @@ public class SecurityConfig {
 
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/favicon.ico", "/Styles/**", "/js/**", "/images/**",
+                        .requestMatchers("/","/Contacts","/aaa.png","/hammer.gif","/judge.png","/legal.png",
+                                "/5974451_22060.jpg","/11667035_20943399.jpg","/favicon.ico", "/Styles/**", "/js/**", "/images/**",
                                 "/user/register", "/user/login","/admin/login","/admin/register","/delivery/login","/delivery/register","/auction/admin/**").permitAll()
                         .anyRequest().authenticated() // all other endpoints require login
                 )
