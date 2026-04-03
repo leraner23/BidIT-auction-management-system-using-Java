@@ -21,14 +21,15 @@
             <!-- Full Name -->
             <div class="field">
                 <label>Full Name</label>
-                <input type="text" th:field="*{fullName}" placeholder="enter your name" required>
+                <input type="text" th:field="*{fullName}" placeholder="enter your name" minlength="5" pattern="^(?!.*(.)\1{2,}).*$"
+                       title="Fullname cannot contain repeated characters like ssss or aaaa"   required>
                 <p class="error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></p>
             </div>
 
             <!-- Username -->
             <div class="field">
                 <label>Username</label>
-                <input type="text" th:field="*{username}" placeholder="enter your username" required>
+                <input type="text" th:field="*{username}" pattern="^(?!.*(.)\1{2,}).*$" placeholder="enter your username" minlength="3" required>
                 <p class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
             </div>
 
@@ -42,7 +43,8 @@
             <!-- Phone -->
             <div class="field">
                 <label>Phone Number</label>
-                <input type="text" th:field="*{phone}" pattern="98\d{8}" maxlength="10"  placeholder="98XXXXXXXX" required>
+                <input type="text" th:field="*{phone}" pattern="98\d{8}" maxlength="10" minlength="10" placeholder="XXXXXXXXXX"
+                       title="Start with 98...... and mimimum length is 10" required>
 
                 <p class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
             </div>
@@ -50,7 +52,7 @@
             <!-- Age -->
             <div class="field">
                 <label>Age</label>
-                <input type="number" th:field="*{userAge}" placeholder="enter your age" required>
+                <input type="number" th:field="*{userAge}" placeholder="enter your age" min="6" required>
                 <p class="error" th:if="${#fields.hasErrors('userAge')}" th:errors="*{userAge}"></p>
             </div>
 
@@ -83,14 +85,16 @@
             <!-- Password -->
             <div class="field">
                 <label>Password</label>
-                <input type="password" th:field="*{password}" placeholder="********" required >
+                <input type="password" th:field="*{password}" minlength="5" maxlength="8"
+                       title="minimum password length is 5 and maximum is 8 " placeholder="********" required >
                 <p class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
             </div>
 
             <!-- Confirm Password -->
             <div class="field">
                 <label>Confirm Password</label>
-                <input type="password" th:field="*{Cpassword}" placeholder="********" required>
+                <input type="password" th:field="*{Cpassword}" minlength="5" maxlength="8"
+                       title="minimum password length is 5 and maximum is 8 " placeholder="********" required>
                 <p class="error" th:if="${#fields.hasErrors('Cpassword')}" th:errors="*{Cpassword}"></p>
             </div>
 
