@@ -26,6 +26,8 @@ public class BidService {
     private BidDetailsRepo bidDetailsRepo;
     @Autowired
     private BudgetRepo budgetRepository;
+    @Autowired
+    private EmailService emailService;
 
     // Place a new bid
     public Bid placeBid(User user, Item item, double amount) {
@@ -136,7 +138,7 @@ public class BidService {
         bidDetails.setAmount(highestBid.getBidAmount());
 
         bidDetailsRepo.save(bidDetails);
-
+        emailService.sendEmail(winner.getEmail());
         // 5️⃣ Update item
         item.setStatus(Status.SOlD);
         item.setBidDetails(bidDetails);
